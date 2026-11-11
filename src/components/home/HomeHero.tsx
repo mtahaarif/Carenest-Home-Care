@@ -23,7 +23,7 @@ const SLIDES: BannerImage[] = [
 export function HomeHero() {
   return (
     <section className="relative">
-      <div className="relative isolate flex min-h-[720px] items-center overflow-hidden pb-28 pt-36 lg:min-h-[100svh] lg:pt-32">
+      <div className="relative isolate flex min-h-[720px] items-center overflow-hidden pb-28 pt-40 lg:min-h-[100svh] lg:pt-40">
         <BannerMedia images={SLIDES} controls interval={6000} />
 
         <div className="container relative">

@@ -14,7 +14,7 @@ export function IntroStatement() {
           <div className="absolute -inset-4 rotate-[-4deg] rounded-[2.5rem] bg-primary/15" />
           <ParallaxImage src={IMAGES.elderlyTablet} alt="Elderly woman and daughter browsing tablet together" className="relative aspect-[3/4] rounded-[2.5rem] shadow-elevated" />
           <div className="absolute -bottom-8 -right-6 flex items-center gap-3 rounded-3xl glass p-3 pr-5">
-            <img src={IMAGES.logo} alt="Carenest" className="h-16 w-16 rounded-2xl bg-white object-contain p-1" />
+            <img src={IMAGES.logo} alt="Carenest Home Care" className="h-16 w-auto rounded-2xl bg-white object-contain p-1.5" />
             <span>
               <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">We are</span>
               <span className="block text-lg font-extrabold text-foreground">Carenest</span>

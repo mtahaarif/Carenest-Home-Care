@@ -48,7 +48,7 @@ export function Footer() {
 
       <div className="container relative grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12 lg:py-20">
         <div className="lg:col-span-4">
-          <Logo tone="dark" />
+          <Logo tone="dark" imgClassName="h-28" />
           <p className="mt-6 max-w-sm leading-relaxed text-ink-foreground/65">
             Home care, your way. Personalized care solutions tailored to your family&apos;s needs across Cook, Lake, and DuPage counties.
           </p>

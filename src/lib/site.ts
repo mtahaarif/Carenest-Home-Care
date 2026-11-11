@@ -1,8 +1,8 @@
 export const SITE = {
   name: "Carenest Homecare",
   url: "https://carenesthc.com",
-  phone: "(833) 405-6789",
-  phoneHref: "tel:+18334056789",
+  phone: "(224) 524-9111",
+  phoneHref: "tel:+12245249111",
   email: "info@carenesthc.com",
   emailHref: "mailto:info@carenesthc.com",
   address: "4001 W Devon Ave STE 300, Chicago, IL 60646",
@@ -11,8 +11,8 @@ export const SITE = {
 } as const;
 
 export const IMAGES = {
-  logo: "/assets/logo-new.png",
-  logoMark: "/assets/logo-mark.png",
+  /** Full Carenest Home Care logo (transparent PNG, 667×535). */
+  logo: "/assets/logo-full.png",
   granddaughterGrandma: "/assets/granddaughter-grandma.jpg",
   personalCare: "/assets/care-personal-care.jpg",
   elderlyTablet: "/assets/elderly-tablet.jpg",

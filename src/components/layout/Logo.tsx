@@ -2,16 +2,30 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { IMAGES } from "@/lib/site";
 
-export function Logo({ className, tone = "light", onClick }: { className?: string; tone?: "light" | "dark"; onClick?: () => void }) {
+interface LogoProps {
+  className?: string;
+  /** Controls the rendered height (width follows the logo's aspect ratio). */
+  imgClassName?: string;
+  /** On dark surfaces the logo sits on a light card so the teal script stays legible. */
+  tone?: "light" | "dark";
+  onClick?: () => void;
+}
+
+export function Logo({ className, imgClassName, tone = "light", onClick }: LogoProps) {
   return (
-    <Link href="/" onClick={onClick} aria-label="Carenest Homecare — home" className={cn("group flex items-center gap-2.5", className)}>
-      <span className="relative grid h-11 w-11 place-items-center overflow-hidden rounded-full bg-white shadow-soft ring-1 ring-black/5 transition-transform duration-500 group-hover:rotate-[-8deg] group-hover:scale-105">
-        <img src={IMAGES.logoMark} alt="" className="h-9 w-9 object-contain" />
-      </span>
-      <span className="leading-none">
-        <span className={cn("block text-lg font-extrabold tracking-tight", tone === "dark" ? "text-ink-foreground" : "text-foreground")}>Carenest</span>
-        <span className={cn("block text-[0.62rem] font-semibold uppercase tracking-[0.28em]", tone === "dark" ? "text-accent" : "text-primary")}>Home Care</span>
-      </span>
+    <Link
+      href="/"
+      onClick={onClick}
+      aria-label="Carenest Home Care — home"
+      className={cn("group flex shrink-0 items-center", tone === "dark" && "w-fit rounded-2xl bg-white/95 px-3 py-2 shadow-soft", className)}
+    >
+      <img
+        src={IMAGES.logo}
+        alt="Carenest Home Care"
+        width={667}
+        height={535}
+        className={cn("h-14 w-auto transition-all duration-500 ease-out group-hover:scale-[1.04]", imgClassName)}
+      />
     </Link>
   );
 }

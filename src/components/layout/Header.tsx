@@ -77,12 +77,12 @@ export function Header() {
         <div className={cn("container transition-[padding] duration-500", scrolled ? "pt-3" : "pt-5")}>
           <nav
             className={cn(
-              "relative flex items-center justify-between gap-4 rounded-full py-2 pl-3 pr-2 transition-all duration-500",
-              scrolled || megaOpen ? "glass" : "border border-transparent bg-white/40 backdrop-blur-md",
+              "relative flex items-center justify-between gap-4 rounded-[2rem] py-1.5 pl-4 pr-2 transition-all duration-500",
+              scrolled || megaOpen ? "border border-white/80 bg-white/92 shadow-soft backdrop-blur-xl" : "border border-white/60 bg-white/55 backdrop-blur-md",
             )}
             onMouseLeave={closeMega}
           >
-            <Logo />
+            <Logo imgClassName={scrolled ? "h-14 md:h-16" : "h-16 md:h-[5.5rem]"} />
 
             <ul className="hidden items-center gap-1 lg:flex" onMouseLeave={() => setHovered(null)}>
               {NAV.map((item) => (
@@ -196,7 +196,7 @@ export function Header() {
             data-lenis-prevent
           >
             <div className="container flex items-center justify-between pt-5">
-              <Logo tone="dark" onClick={() => setMobileOpen(false)} />
+              <Logo tone="dark" imgClassName="h-14" onClick={() => setMobileOpen(false)} />
               <button onClick={() => setMobileOpen(false)} className="grid h-11 w-11 place-items-center rounded-full bg-white/10" aria-label="Close menu">
                 <X className="h-5 w-5" />
               </button>

@@ -32,7 +32,7 @@ export function PageHero({ eyebrow, title, description, breadcrumbs, actions, im
   const media: BannerImage[] = images ?? (image ? [{ src: image, alt: imageAlt, position: imagePosition ?? "70% center" }] : []);
 
   return (
-    <section className={cn("relative isolate flex min-h-[600px] items-center overflow-hidden pb-20 pt-36 md:min-h-[640px] md:pt-40 lg:min-h-[72vh]", className)}>
+    <section className={cn("relative isolate flex min-h-[600px] items-center overflow-hidden pb-20 pt-40 md:min-h-[660px] md:pt-48 lg:min-h-[72vh]", className)}>
       {media.length > 0 ? <BannerMedia images={media} controls={media.length > 1} /> : <div className="absolute inset-0 -z-10 bg-secondary/60" />}
 
       <div className="container relative">
