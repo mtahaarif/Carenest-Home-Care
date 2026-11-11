@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ComponentProps, type PointerEvent } from "react";
-import { motion, useMotionTemplate, useMotionValue, useSpring } from "motion/react";
+import { m, useMotionTemplate, useMotionValue, useSpring } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface GlowCardProps extends ComponentProps<"div"> {
@@ -47,15 +47,15 @@ export function GlowCard({ className, children, tilt = false, onPointerMove, onP
   }
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
       style={{ transform }}
       className={cn("glow-card", className)}
-      {...(props as ComponentProps<typeof motion.div>)}
+      {...(props as ComponentProps<typeof m.div>)}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

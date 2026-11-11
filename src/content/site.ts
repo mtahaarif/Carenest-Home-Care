@@ -22,7 +22,7 @@ import {
   UserX,
   type LucideIcon,
 } from "@/components/icons";
-import { IMAGES } from "@/lib/site";
+import { IMAGES, type SiteImage } from "@/lib/site";
 
 /* ------------------------------------------------------------------ */
 /*  Services                                                           */
@@ -33,7 +33,7 @@ export interface ServiceSummary {
   title: string;
   short: string;
   description: string;
-  image: string;
+  image: SiteImage;
   icon: LucideIcon;
 }
 
@@ -344,4 +344,70 @@ export const USER_TYPES = [
   { value: "caregiver-no-client", label: "I would like to be a caregiver, but do not have a client" },
   { value: "have-client-need-agency", label: "I have a client and need an agency" },
   { value: "something-else", label: "Something else" },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Supporting FAQs (answers restate information found elsewhere on    */
+/*  the site — keep them in sync when policies change)                 */
+/* ------------------------------------------------------------------ */
+
+export const CONTACT_FAQS = [
+  {
+    question: "What happens after I send a message?",
+    answer:
+      "One of our caring team members will be in touch to answer your questions and walk you through your options. We start with a free, comprehensive consultation where our care coordinators assess your loved one's physical, emotional, and social needs, then create a personalized care plan together.",
+  },
+  {
+    question: "Is the consultation really free?",
+    answer: "Yes. Your consultation is free, with no pressure and no obligation — just answers to help you decide what kind of care fits your family.",
+  },
+  FAQS[5],
+  {
+    question: "Can I bring a caregiver I already know?",
+    answer:
+      "In some cases, yes. Whether you have someone in mind or need us to find the right caregiver, we handle licensing, payroll, insurance, and training so you can focus on what matters most.",
+  },
+];
+
+export const AREA_FAQS = [
+  {
+    question: "Which areas does Carenest serve?",
+    answer:
+      "We provide in-home care throughout Cook County (Chicago and its surrounding communities), Lake County (the northern suburbs), and DuPage County (the western suburbs). Our office is at 4001 W Devon Ave STE 300, Chicago, IL 60646.",
+  },
+  {
+    question: "Do you serve areas outside Cook, Lake, and DuPage counties?",
+    answer: "Contact us to discuss your care needs. We may be able to accommodate additional areas not listed above.",
+  },
+  {
+    question: "What home care services can I get in my county?",
+    answer:
+      "We offer Senior Care, Personal Care, Companion Care, 24-Hour Care, Alzheimer's Care, and Dementia Care, and we can combine services into one care plan. Contact us to confirm availability for your address.",
+  },
+  FAQS[5],
+];
+
+export const CAREER_FAQS = [
+  {
+    question: "What do I need to apply for a caregiver job?",
+    answer:
+      "A high school diploma or equivalent, a clear background check, strong communication skills, and a compassionate, reliable approach. A valid driver's license is optional, and previous caregiving experience is preferred.",
+  },
+  {
+    question: "Do I need previous caregiving experience?",
+    answer: "Previous caregiving experience is preferred but not required. We provide comprehensive training and certification to prepare you for success.",
+  },
+  {
+    question: "I already care for a family member. Can I get paid for it?",
+    answer:
+      "You may be able to. You are already doing the work, so let us help you get compensated. In some cases, families can bring someone they already know, and we can help make them an official caregiver. Contact us to talk through your situation.",
+  },
+  {
+    question: "How does the hiring process work?",
+    answer: "Apply online, meet with our team for an interview, complete our comprehensive training program, and then begin making a difference in the lives of those who need compassionate care.",
+  },
+  {
+    question: "Are full-time and part-time roles available?",
+    answer: "Yes. Our caregiver position is available full-time or part-time, with flexible scheduling so you can choose hours that work for your lifestyle.",
+  },
 ];

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion, type Variants } from "motion/react";
+import { m, type Variants } from "motion/react";
 import { cn } from "@/lib/utils";
 
 export const EASE_OUT = [0.22, 1, 0.36, 1] as const;
@@ -31,7 +31,7 @@ interface RevealProps {
 
 /** Fades/slides content in when it enters the viewport. */
 export function Reveal({ children, className, delay = 0, duration = 0.8, direction = "up", distance = 28, blur = true, once = true, as = "div" }: RevealProps) {
-  const Comp = motion[as];
+  const Comp = m[as];
   return (
     <Comp
       className={className}
@@ -48,7 +48,7 @@ export function Reveal({ children, className, delay = 0, duration = 0.8, directi
 /** Parent that staggers its <RevealItem> children. */
 export function RevealGroup({ children, className, stagger = 0.08, delay = 0 }: { children: ReactNode; className?: string; stagger?: number; delay?: number }) {
   return (
-    <motion.div
+    <m.div
       className={className}
       initial="hidden"
       whileInView="visible"
@@ -56,7 +56,7 @@ export function RevealGroup({ children, className, stagger = 0.08, delay = 0 }: 
       variants={{ visible: { transition: { staggerChildren: stagger, delayChildren: delay } } }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -67,9 +67,9 @@ const itemVariants: Variants = {
 
 export function RevealItem({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <motion.div className={cn(className)} variants={itemVariants}>
+    <m.div className={cn(className)} variants={itemVariants}>
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -77,17 +77,17 @@ export function RevealItem({ children, className }: { children: ReactNode; class
 export function MaskLines({ lines, className, lineClassName, delay = 0, immediate = false }: { lines: ReactNode[]; className?: string; lineClassName?: string; delay?: number; immediate?: boolean }) {
   const trigger = immediate ? { animate: "visible" } : { whileInView: "visible", viewport: { once: true } };
   return (
-    <motion.span className={cn("block", className)} initial="hidden" {...trigger} transition={{ staggerChildren: 0.1, delayChildren: delay }}>
+    <m.span className={cn("block", className)} initial="hidden" {...trigger} transition={{ staggerChildren: 0.1, delayChildren: delay }}>
       {lines.map((line, i) => (
         <span key={i} className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
-          <motion.span
+          <m.span
             className={cn("block", lineClassName)}
             variants={{ hidden: { y: "110%", rotate: 2 }, visible: { y: "0%", rotate: 0, transition: { duration: 0.9, ease: EASE_OUT } } }}
           >
             {line}
-          </motion.span>
+          </m.span>
         </span>
       ))}
-    </motion.span>
+    </m.span>
   );
 }

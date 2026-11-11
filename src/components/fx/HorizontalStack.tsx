@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
+import { m, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 
@@ -15,9 +15,9 @@ function SlidingCard({ index, total, progress, offset, enterFrom, children }: { 
   const filter = useTransform(dim, (d) => `brightness(${d})`);
 
   return (
-    <motion.div style={{ x, rotate, filter, zIndex: index }} className="absolute left-0 top-0 h-full will-change-transform">
+    <m.div style={{ x, rotate, filter, zIndex: index }} className="absolute left-0 top-0 h-full will-change-transform">
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -84,7 +84,7 @@ export function HorizontalStack({
               <span className="text-lg font-semibold text-muted-foreground">{String(items.length).padStart(2, "0")}</span>
             </div>
             <div className="mt-6 h-1 w-56 overflow-hidden rounded-full bg-foreground/10">
-              <motion.div style={{ scaleX: progress }} className="h-full origin-left rounded-full bg-gradient-to-r from-primary to-accent" />
+              <m.div style={{ scaleX: progress }} className="h-full origin-left rounded-full bg-gradient-to-r from-primary to-accent" />
             </div>
           </div>
           <div className="relative" style={{ height: cardHeight, width: cardWidth + offset * (items.length - 1) }}>

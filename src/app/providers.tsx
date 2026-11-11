@@ -1,22 +1,15 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { AuthProvider } from "@/contexts/AuthContext";
 import { SmoothScroll } from "@/components/fx/SmoothScroll";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { useEngagementWatcher } from "@/hooks/use-user-engaged";
 
+/** Site-wide client providers. Auth (Supabase) and toasts are scoped to the pages that use them. */
 export function Providers({ children }: { children: ReactNode }) {
+  useEngagementWatcher();
   return (
-    <TooltipProvider>
-      <AuthProvider>
-        <SmoothScroll>
-          {children}
-          <Toaster />
-          <Sonner />
-        </SmoothScroll>
-      </AuthProvider>
-    </TooltipProvider>
+    <SmoothScroll>
+      {children}
+    </SmoothScroll>
   );
 }

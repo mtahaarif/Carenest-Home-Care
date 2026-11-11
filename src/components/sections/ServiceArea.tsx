@@ -2,12 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { ArrowUpRight, MapPin } from "@/components/icons";
 import { GlowCard } from "@/components/fx/GlowCard";
 import { Reveal, RevealGroup, RevealItem } from "@/components/fx/Reveal";
 import { SectionHeading } from "@/components/fx/SectionHeading";
-import { IllinoisMap } from "@/components/maps/IllinoisMap";
+import dynamic from "next/dynamic";
+
+/** d3-geo + map data load only when this section renders (kept out of the initial bundle). */
+const IllinoisMap = dynamic(() => import("@/components/maps/IllinoisMap").then((m) => m.IllinoisMap), {
+  ssr: false,
+  loading: () => <div className="h-full w-full animate-pulse rounded-3xl bg-white/40" />,
+});
 import { COUNTIES } from "@/content/site";
 import { cn } from "@/lib/utils";
 
@@ -44,7 +50,7 @@ export function ServiceArea({ heading = true }: { heading?: boolean }) {
               <IllinoisMap active={active} onHover={setActive} />
               <AnimatePresence>
                 {activeCounty && (
-                  <motion.div
+                  <m.div
                     key={activeCounty.name}
                     initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -53,7 +59,7 @@ export function ServiceArea({ heading = true }: { heading?: boolean }) {
                   >
                     <p className="font-bold">{activeCounty.name}</p>
                     <p className="text-xs text-ink-foreground/70">{activeCounty.blurb}</p>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
             </div>

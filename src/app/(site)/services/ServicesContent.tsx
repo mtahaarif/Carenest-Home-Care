@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Phone, Plus } from "@/components/icons";
 import { GlowCard } from "@/components/fx/GlowCard";
@@ -19,7 +20,7 @@ import { cn } from "@/lib/utils";
 function ServiceTile({ service, index, large = false }: { service: ServiceSummary; index: number; large?: boolean }) {
   return (
     <Link href={serviceHref(service.slug)} className={cn("group relative block h-full overflow-hidden rounded-[2rem] bg-ink", large ? "min-h-[28rem]" : "min-h-[22rem]")}>
-      <img src={service.image} alt={service.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110" />
+      <Image src={service.image.src} alt={service.image.alt} sizes={large ? "(min-width: 1024px) 66vw, (min-width: 768px) 50vw, 92vw" : "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 92vw"} placeholder="blur" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110" />
       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent" />
       {/* Hover reveal panel */}
       <div className="absolute inset-0 translate-y-full bg-primary/85 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0 max-lg:hidden" />
@@ -57,8 +58,7 @@ export function ServicesContent() {
           </>,
         ]}
         description="Seniors, individuals with disabilities, and recovering patients can maintain their independence and dignity in the comfort of their own homes with the help of Carenest's expert home care services."
-        image={IMAGES.consultation}
-        imageAlt="Caregiver providing compassionate support"
+        image={IMAGES.patientCare}
         badge={
           <a href={SITE.phoneHref} className="flex animate-float items-center gap-3 rounded-2xl glass p-4 transition-transform hover:scale-105">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-gradient text-white">
@@ -105,8 +105,9 @@ export function ServicesContent() {
               text="When an elderly loved one needs assistance with everyday duties but still wishes to remain in their own home, many families choose to hire specialized home services for seniors. Following hospitalization, surgery recovery, or long-term conditions like dementia or Alzheimer's, some people require assistance."
             />
             <Reveal className="mt-8 text-lg leading-relaxed text-ink-foreground/70">
-              People with disabilities can enhance their quality of life and gain greater independence through services. Whether you need daily assistance or just a few
-              hours of companionship each week, our caregivers are available to help.
+              People with disabilities can enhance their quality of life and gain <strong className="font-semibold text-ink-foreground">greater independence</strong>{" "}
+              through services. Whether you need <strong className="font-semibold text-ink-foreground">daily assistance</strong> or just a few hours of companionship each
+              week, our caregivers are available to help.
             </Reveal>
             <Reveal className="mt-10">
               <Button asChild variant="accent" size="lg">
@@ -150,7 +151,7 @@ export function ServicesContent() {
                 </div>
                 <Button asChild variant="outline">
                   <Link href={serviceHref(TRADITIONAL_CARE.slug)}>
-                    Learn more <ArrowUpRight />
+                    Explore traditional home care <ArrowUpRight />
                   </Link>
                 </Button>
               </GlowCard>

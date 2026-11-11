@@ -73,3 +73,21 @@ src/
 
 All motion respects `prefers-reduced-motion`: Lenis is disabled, pinned sections fall back to static layouts and CSS
 animations are minimised.
+
+## SEO & performance
+
+- **Images** — every photo is a static import rendered with `next/image` (AVIF/WebP, responsive `srcset`, explicit
+  dimensions, lazy-loading, blur placeholders). Descriptive alt text lives in `src/lib/images.ts`. The first banner
+  slide and the header logo are preloaded. Source files in `public/assets` are pre-compressed (≤2000px, mozjpeg q80).
+- **First paint** — above-the-fold banners animate with CSS only (`HeroLines`, `animate-rise`), the page-transition
+  curtain only runs on client-side navigations, and ambient loops (slideshow autoplay, marquees, floating glows) start on
+  the visitor's first interaction (`use-user-engaged`).
+- **JavaScript** — `motion` runs through `LazyMotion` (`m` components, features loaded async); Supabase is imported only
+  by `/auth`, `/admin` and on contact-form submit; the Illinois map and below-the-fold home sections are code-split.
+- **Metadata** — `pageMetadata()` (`src/lib/seo.ts`) gives every page a title, a sub-160-character description, a
+  canonical URL and full Open Graph/Twitter tags. JSON-LD: LocalBusiness (site-wide), BreadcrumbList, Service and FAQPage.
+- **Crawling** — `/sitemap.xml`, `/robots.txt` (with Sitemap line; `/admin`, `/auth`, `/api` disallowed) and `/llms.txt`
+  are generated from route data. `/auth` and `/admin` are `noindex`.
+- **Security headers** (`next.config.ts`) — Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, HSTS,
+  Referrer-Policy and Permissions-Policy.
+- **Analytics** — set `NEXT_PUBLIC_GTM_ID` to load Google Tag Manager on every page (the CSP already allows it).

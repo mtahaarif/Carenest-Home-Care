@@ -3,7 +3,10 @@
 import { useEffect, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { ReactLenis, useLenis } from "lenis/react";
-import { MotionConfig, useReducedMotion } from "motion/react";
+import { LazyMotion, MotionConfig, useReducedMotion } from "motion/react";
+
+const loadMotionFeatures = () =>
+  import("@/lib/motion-features").then((mod) => mod.default);
 
 function RouteScrollReset() {
   const lenis = useLenis();
@@ -17,23 +20,36 @@ function RouteScrollReset() {
   return null;
 }
 
-/** Lenis smooth scrolling + reduced-motion aware motion config + scroll reset on navigation. */
+/**
+ * Lenis smooth scrolling + lazily loaded animation features (LazyMotion, strict: only the light `m`
+ * components are allowed) + reduced-motion aware config + scroll reset on navigation.
+ */
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const reduceMotion = useReducedMotion();
 
   return (
-    <MotionConfig reducedMotion="user">
-      {reduceMotion ? (
-        <>
-          <RouteScrollReset />
-          {children}
-        </>
-      ) : (
-        <ReactLenis root options={{ lerp: 0.11, smoothWheel: true, wheelMultiplier: 1, anchors: true }}>
-          <RouteScrollReset />
-          {children}
-        </ReactLenis>
-      )}
-    </MotionConfig>
+    <LazyMotion features={loadMotionFeatures} strict>
+      <MotionConfig reducedMotion="user">
+        {reduceMotion ? (
+          <>
+            <RouteScrollReset />
+            {children}
+          </>
+        ) : (
+          <ReactLenis
+            root
+            options={{
+              lerp: 0.11,
+              smoothWheel: true,
+              wheelMultiplier: 1,
+              anchors: true,
+            }}
+          >
+            <RouteScrollReset />
+            {children}
+          </ReactLenis>
+        )}
+      </MotionConfig>
+    </LazyMotion>
   );
 }

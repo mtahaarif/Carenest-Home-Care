@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView } from "motion/react";
+import { AnimatePresence, m, useInView } from "motion/react";
 import { EASE_OUT, Reveal } from "@/components/fx/Reveal";
 import { HIRING_STEPS } from "@/content/site";
 import { cn } from "@/lib/utils";
@@ -61,7 +61,7 @@ export function HiringProcess() {
           <div className="mt-12 hidden items-end gap-8 lg:flex">
             <div className="relative h-[8.5rem] w-60 shrink-0 overflow-hidden">
               <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span
+                <m.span
                   key={active}
                   initial={{ y: "100%", opacity: 0 }}
                   animate={{ y: "0%", opacity: 1 }}
@@ -70,7 +70,7 @@ export function HiringProcess() {
                   className="absolute inset-0 text-[9rem] font-extrabold leading-none tracking-tighter text-gradient"
                 >
                   0{active + 1}
-                </motion.span>
+                </m.span>
               </AnimatePresence>
             </div>
             <ol className="space-y-3 pb-3">

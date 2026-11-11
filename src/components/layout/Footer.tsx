@@ -1,23 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "motion/react";
+import { m, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { useLenis } from "lenis/react";
 import { ArrowUp, ArrowUpRight, Instagram, Mail, MapPin, Phone, Sparkle } from "@/components/icons";
 import { Marquee } from "@/components/fx/Marquee";
 import { Magnetic } from "@/components/fx/Magnetic";
-import { SERVICES, serviceHref } from "@/content/site";
+import { SERVICES, TRADITIONAL_CARE, serviceHref } from "@/content/site";
 import { SITE } from "@/lib/site";
 import { Logo } from "./Logo";
 
 const QUICK_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Areas of Service", href: "/area-of-service" },
-  { label: "Careers", href: "/careers" },
-  { label: "Contact", href: "/contact" },
+  { label: "About Carenest", href: "/about" },
+  { label: "All home care services", href: "/services" },
+  { label: "Areas we serve", href: "/area-of-service" },
+  { label: "Careers at Carenest", href: "/careers" },
+  { label: "Caregiver job opening", href: "/careers/caregiver" },
+  { label: "Contact our team", href: "/contact" },
 ];
 
 export function Footer() {
@@ -36,19 +36,17 @@ export function Footer() {
       <div className="relative border-b border-white/10 py-8 md:py-10">
         <Marquee duration={45} trackClassName="gap-10 pr-10">
           {SERVICES.map((s) => (
-            <Link key={s.slug} href={serviceHref(s.slug)} className="group flex items-center gap-10">
-              <span className="text-4xl font-bold tracking-tight text-ink-foreground/90 transition-colors duration-300 group-hover:text-accent md:text-6xl">
-                {s.title}
-              </span>
-              <Sparkle className="h-7 w-7 shrink-0 fill-accent text-accent md:h-9 md:w-9" />
-            </Link>
+            <span key={s.slug} className="flex items-center gap-10">
+              <span className="text-4xl font-bold tracking-tight text-ink-foreground/90 md:text-6xl">{s.title}</span>
+              <Sparkle className="h-7 w-7 shrink-0 fill-accent text-accent md:h-9 md:w-9" aria-hidden />
+            </span>
           ))}
         </Marquee>
       </div>
 
       <div className="container relative grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12 lg:py-20">
         <div className="lg:col-span-4">
-          <Logo tone="dark" imgClassName="h-28" />
+          <Logo tone="dark" decorative imgClassName="h-28" />
           <p className="mt-6 max-w-sm leading-relaxed text-ink-foreground/65">
             Home care, your way. Personalized care solutions tailored to your family&apos;s needs across Cook, Lake, and DuPage counties.
           </p>
@@ -64,7 +62,7 @@ export function Footer() {
         </div>
 
         <div className="lg:col-span-2">
-          <h4 className="eyebrow text-ink-foreground/50">Explore</h4>
+          <h3 className="eyebrow text-ink-foreground/50">Explore</h3>
           <ul className="mt-6 space-y-3">
             {QUICK_LINKS.map((l) => (
               <li key={l.href}>
@@ -80,9 +78,9 @@ export function Footer() {
         </div>
 
         <div className="lg:col-span-3">
-          <h4 className="eyebrow text-ink-foreground/50">Care Services</h4>
+          <h3 className="eyebrow text-ink-foreground/50">Care Services</h3>
           <ul className="mt-6 space-y-3">
-            {SERVICES.map((s) => (
+            {[...SERVICES, TRADITIONAL_CARE].map((s) => (
               <li key={s.slug}>
                 <Link href={serviceHref(s.slug)} className="group inline-flex items-center gap-1.5 text-ink-foreground/80 transition-colors hover:text-ink-foreground">
                   {s.title}
@@ -94,7 +92,7 @@ export function Footer() {
         </div>
 
         <div className="lg:col-span-3">
-          <h4 className="eyebrow text-ink-foreground/50">Visit</h4>
+          <h3 className="eyebrow text-ink-foreground/50">Visit</h3>
           <ul className="mt-6 space-y-4 text-ink-foreground/80">
             <li className="flex gap-3">
               <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
@@ -136,25 +134,17 @@ export function Footer() {
 
       {/* Oversized wordmark */}
       <div className="relative overflow-hidden" aria-hidden>
-        <motion.p
+        <m.p
           style={{ y: wordY }}
           className="select-none text-center text-[22vw] font-extrabold leading-[0.8] tracking-tighter text-transparent [-webkit-text-stroke:1px_hsl(0_0%_100%/0.14)]"
         >
           Carenest
-        </motion.p>
+        </m.p>
       </div>
 
       <div className="relative border-t border-white/10">
         <div className="container flex flex-col items-center justify-between gap-4 py-6 text-sm text-ink-foreground/55 md:flex-row">
           <p>© {new Date().getFullYear()} Carenest Homecare. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-            <a href="#" className="transition-colors hover:text-ink-foreground">
-              Privacy Policy
-            </a>
-            <a href="#" className="transition-colors hover:text-ink-foreground">
-              Terms of Service
-            </a>
-          </div>
         </div>
       </div>
     </footer>

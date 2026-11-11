@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { AnimatePresence, m, useMotionValueEvent, useScroll } from "motion/react";
 import { useLenis } from "lenis/react";
 import { ArrowUpRight, ChevronDown, Mail, Menu, Phone, X } from "@/components/icons";
 import { Magnetic } from "@/components/fx/Magnetic";
@@ -16,11 +17,11 @@ import { Logo } from "./Logo";
 
 const NAV = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "About Us", href: "/about" },
   { label: "Services", href: "/services", mega: true },
-  { label: "Areas", href: "/area-of-service" },
+  { label: "Areas We Serve", href: "/area-of-service" },
   { label: "Careers", href: "/careers" },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const isActive = (pathname: string, href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
@@ -69,7 +70,7 @@ export function Header() {
 
   return (
     <>
-      <motion.header
+      <m.header
         className="fixed inset-x-0 top-0 z-50"
         animate={{ y: hidden ? "-120%" : "0%" }}
         transition={{ duration: 0.45, ease: EASE_OUT }}
@@ -82,7 +83,7 @@ export function Header() {
             )}
             onMouseLeave={closeMega}
           >
-            <Logo imgClassName={scrolled ? "h-14 md:h-16" : "h-16 md:h-[5.5rem]"} />
+            <Logo preload imgClassName={scrolled ? "h-14 md:h-16" : "h-16 md:h-[5.5rem]"} />
 
             <ul className="hidden items-center gap-1 lg:flex" onMouseLeave={() => setHovered(null)}>
               {NAV.map((item) => (
@@ -98,7 +99,7 @@ export function Header() {
                     )}
                   >
                     {pillTarget === item.href && (
-                      <motion.span
+                      <m.span
                         layoutId="nav-pill"
                         className={cn("absolute inset-0 -z-10 rounded-full", isActive(pathname, item.href) ? "bg-primary/10" : "bg-foreground/5")}
                         transition={{ type: "spring", stiffness: 380, damping: 32 }}
@@ -140,7 +141,7 @@ export function Header() {
             {/* Services mega menu */}
             <AnimatePresence>
               {megaOpen && (
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 12, scale: 0.98, filter: "blur(6px)" }}
                   animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
                   exit={{ opacity: 0, y: 8, scale: 0.98, filter: "blur(6px)" }}
@@ -151,7 +152,7 @@ export function Header() {
                 >
                   <div className="grid grid-cols-[1fr_1fr_1fr_17rem] gap-2">
                     {SERVICES.map((s, i) => (
-                      <motion.div key={s.slug} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 * i, duration: 0.4, ease: EASE_OUT }}>
+                      <m.div key={s.slug} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 * i, duration: 0.4, ease: EASE_OUT }}>
                         <Link href={serviceHref(s.slug)} className="group flex items-start gap-3 rounded-2xl p-4 transition-colors hover:bg-white/80">
                           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-[-6deg]">
                             <s.icon className="h-5 w-5" />
@@ -164,10 +165,10 @@ export function Header() {
                             <span className="mt-0.5 block text-xs text-muted-foreground">{s.short}</span>
                           </span>
                         </Link>
-                      </motion.div>
+                      </m.div>
                     ))}
                     <Link href="/services" className="group relative row-span-2 col-start-4 row-start-1 overflow-hidden rounded-2xl">
-                      <img src={SERVICES[2].image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <Image src={SERVICES[2].image.src} alt="" sizes="272px" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                       <span className="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-transparent" />
                       <span className="absolute inset-x-0 bottom-0 p-5 text-ink-foreground">
                         <span className="eyebrow text-accent">Explore</span>
@@ -177,17 +178,17 @@ export function Header() {
                       </span>
                     </Link>
                   </div>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </nav>
         </div>
-      </motion.header>
+      </m.header>
 
       {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
+          <m.div
             className="fixed inset-0 z-[70] flex flex-col bg-ink-gradient text-ink-foreground lg:hidden"
             initial={{ clipPath: "circle(0% at calc(100% - 44px) 44px)" }}
             animate={{ clipPath: "circle(150% at calc(100% - 44px) 44px)" }}
@@ -196,7 +197,7 @@ export function Header() {
             data-lenis-prevent
           >
             <div className="container flex items-center justify-between pt-5">
-              <Logo tone="dark" imgClassName="h-14" onClick={() => setMobileOpen(false)} />
+              <Logo tone="dark" decorative imgClassName="h-14" onClick={() => setMobileOpen(false)} />
               <button onClick={() => setMobileOpen(false)} className="grid h-11 w-11 place-items-center rounded-full bg-white/10" aria-label="Close menu">
                 <X className="h-5 w-5" />
               </button>
@@ -204,7 +205,7 @@ export function Header() {
             <div className="container flex flex-1 flex-col overflow-y-auto pb-8 pt-10">
               <ul className="space-y-1">
                 {NAV.map((item, i) => (
-                  <motion.li key={item.href} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.06, duration: 0.6, ease: EASE_OUT }}>
+                  <m.li key={item.href} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.06, duration: 0.6, ease: EASE_OUT }}>
                     <Link
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
@@ -213,17 +214,17 @@ export function Header() {
                       <span className="text-xs font-semibold text-ink-foreground/40">0{i + 1}</span>
                       {item.label}
                     </Link>
-                  </motion.li>
+                  </m.li>
                 ))}
               </ul>
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mt-8 flex flex-wrap gap-2">
+              <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mt-8 flex flex-wrap gap-2">
                 {SERVICES.map((s) => (
                   <Link key={s.slug} href={serviceHref(s.slug)} onClick={() => setMobileOpen(false)} className="rounded-full glass-dark px-4 py-2 text-sm">
                     {s.title}
                   </Link>
                 ))}
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-auto space-y-3 pt-10">
+              </m.div>
+              <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-auto space-y-3 pt-10">
                 <a href={SITE.phoneHref} className="flex items-center gap-3 text-lg font-semibold">
                   <Phone className="h-5 w-5 text-accent" /> {SITE.phone}
                 </a>
@@ -235,9 +236,9 @@ export function Header() {
                     Get Started <ArrowUpRight />
                   </Link>
                 </Button>
-              </motion.div>
+              </m.div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

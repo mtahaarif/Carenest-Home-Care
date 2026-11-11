@@ -1,16 +1,16 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { m, useScroll, useTransform, type MotionValue } from "motion/react";
 import { cn } from "@/lib/utils";
 
 function Word({ children, progress, range }: { children: string; progress: MotionValue<number>; range: [number, number] }) {
   const opacity = useTransform(progress, range, [0.14, 1]);
   const y = useTransform(progress, range, [6, 0]);
   return (
-    <motion.span style={{ opacity, y }} className="inline-block will-change-transform">
+    <m.span style={{ opacity, y }} className="inline-block will-change-transform">
       {children}&nbsp;
-    </motion.span>
+    </m.span>
   );
 }
 

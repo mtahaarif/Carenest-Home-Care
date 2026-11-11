@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { cn } from "@/lib/utils";
 
 /** Free-dragging carousel with momentum; constraints follow the track width. */
@@ -23,7 +23,7 @@ export function DragCarousel({ children, className }: { children: ReactNode; cla
 
   return (
     <div ref={viewport} className={cn("overflow-hidden", dragging ? "cursor-grabbing" : "cursor-grab", className)}>
-      <motion.div
+      <m.div
         ref={track}
         drag="x"
         dragConstraints={{ left, right: 0 }}
@@ -40,7 +40,7 @@ export function DragCarousel({ children, className }: { children: ReactNode; cla
         className="flex w-max gap-5"
       >
         {children}
-      </motion.div>
+      </m.div>
     </div>
   );
 }

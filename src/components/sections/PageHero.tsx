@@ -1,12 +1,10 @@
-"use client";
-
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { motion } from "motion/react";
 import { ChevronRight } from "@/components/icons";
-import { EASE_OUT, MaskLines } from "@/components/fx/Reveal";
+import type { SiteImage } from "@/lib/images";
 import { cn } from "@/lib/utils";
 import { BannerMedia, type BannerImage } from "./BannerMedia";
+import { HERO_DELAYS, HeroLines } from "./HeroLines";
 
 interface PageHeroProps {
   eyebrow: string;
@@ -16,8 +14,8 @@ interface PageHeroProps {
   breadcrumbs?: { label: string; href?: string }[];
   actions?: ReactNode;
   /** Single banner photo… */
-  image?: string;
-  imageAlt?: string;
+  image?: SiteImage;
+  /** Tailwind object-position class for the banner photo, e.g. "object-[center_30%]". */
   imagePosition?: string;
   /** …or several, which cross-fade as a slideshow. */
   images?: BannerImage[];
@@ -27,9 +25,12 @@ interface PageHeroProps {
   className?: string;
 }
 
-/** Full-bleed photo banner used at the top of every inner page. */
-export function PageHero({ eyebrow, title, description, breadcrumbs, actions, image, imageAlt = "", imagePosition, images, badge, children, className }: PageHeroProps) {
-  const media: BannerImage[] = images ?? (image ? [{ src: image, alt: imageAlt, position: imagePosition ?? "70% center" }] : []);
+/**
+ * Full-bleed photo banner used at the top of every inner page. Entrance animations are pure CSS
+ * so the banner paints on first load without waiting for JavaScript (better LCP / Speed Index).
+ */
+export function PageHero({ eyebrow, title, description, breadcrumbs, actions, image, imagePosition, images, badge, children, className }: PageHeroProps) {
+  const media: BannerImage[] = images ?? (image ? [{ image, position: imagePosition ?? "object-[70%_center]" }] : []);
 
   return (
     <section className={cn("relative isolate flex min-h-[600px] items-center overflow-hidden pb-20 pt-40 md:min-h-[660px] md:pt-48 lg:min-h-[72vh]", className)}>
@@ -38,81 +39,46 @@ export function PageHero({ eyebrow, title, description, breadcrumbs, actions, im
       <div className="container relative">
         <div className="max-w-2xl">
           {breadcrumbs && (
-            <motion.nav
-              aria-label="Breadcrumb"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: EASE_OUT }}
-              className="mb-7 flex w-fit items-center gap-1.5 rounded-full glass px-4 py-2 text-xs font-semibold text-muted-foreground"
-            >
-              {breadcrumbs.map((b, i) => (
-                <span key={b.label} className="flex items-center gap-1.5">
-                  {i > 0 && <ChevronRight className="h-3 w-3 opacity-50" />}
-                  {b.href ? (
-                    <Link href={b.href} className="transition-colors hover:text-primary">
-                      {b.label}
-                    </Link>
-                  ) : (
-                    <span className="text-foreground">{b.label}</span>
-                  )}
-                </span>
-              ))}
-            </motion.nav>
+            <nav aria-label="Breadcrumb" className={cn("mb-7 flex w-fit animate-rise rounded-full glass px-4 py-2 text-xs font-semibold text-muted-foreground", HERO_DELAYS[0])}>
+              <ol className="flex items-center gap-1.5">
+                {breadcrumbs.map((b, i) => (
+                  <li key={b.label} className="flex items-center gap-1.5">
+                    {i > 0 && <ChevronRight className="h-3 w-3 opacity-50" aria-hidden />}
+                    {b.href ? (
+                      <Link href={b.href} className="transition-colors hover:text-primary">
+                        {b.label}
+                      </Link>
+                    ) : (
+                      <span aria-current="page" className="text-foreground">
+                        {b.label}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </nav>
           )}
 
-          <motion.span
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.35, duration: 0.7, ease: EASE_OUT }}
-            className="eyebrow text-primary"
-          >
-            <motion.span
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.4, duration: 0.8, ease: EASE_OUT }}
-              className="h-px w-10 origin-left bg-primary/70"
-            />
+          <p className={cn("eyebrow animate-rise text-primary", HERO_DELAYS[1])}>
+            <span className={cn("h-px w-10 origin-left animate-grow-x bg-primary/70", HERO_DELAYS[2])} />
             {eyebrow}
-          </motion.span>
+          </p>
 
           <h1 className="mt-5 text-5xl font-bold leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
-            <MaskLines lines={title} immediate delay={0.45} />
+            <HeroLines lines={title} startIndex={2} />
           </h1>
 
-          {description && (
-            <motion.p
-              initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.8, delay: 0.75, ease: EASE_OUT }}
-              className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/75 md:text-xl"
-            >
-              {description}
-            </motion.p>
-          )}
+          {description && <p className={cn("mt-6 max-w-xl animate-rise text-lg leading-relaxed text-foreground/75 md:text-xl", HERO_DELAYS[4])}>{description}</p>}
 
-          {actions && (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9, ease: EASE_OUT }}
-              className="mt-9 flex flex-wrap items-center gap-4"
-            >
-              {actions}
-            </motion.div>
-          )}
-          {children}
+          {actions && <div className={cn("mt-9 flex animate-rise flex-wrap items-center gap-4", HERO_DELAYS[5])}>{actions}</div>}
+          {children && <div className={cn("animate-rise", HERO_DELAYS[6])}>{children}</div>}
         </div>
       </div>
 
       {badge && (
-        <motion.div
-          initial={{ opacity: 0, y: 24, scale: 0.92 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, delay: 1.2, ease: EASE_OUT }}
-          className={cn("absolute bottom-10 right-[max(1.25rem,calc((100vw-80rem)/2+2rem))] hidden md:block", media.length > 1 && "bottom-24")}
-        >
+        <div className={cn("absolute bottom-10 right-[max(1.25rem,calc((100vw-80rem)/2+2rem))] hidden animate-pop md:block", HERO_DELAYS[8], media.length > 1 && "bottom-24")}>
           {badge}
-        </motion.div>
+        </div>
       )}
     </section>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { ArrowUpRight, Check, Hand, Phone, Sparkles } from "@/components/icons";
 import { DragCarousel } from "@/components/fx/DragCarousel";
 import { GlowCard } from "@/components/fx/GlowCard";
@@ -30,6 +30,19 @@ function Highlight({ text, word }: { text: string; word: string }) {
   );
 }
 
+/** Wraps the first case-insensitive occurrence of `phrase` in <strong>. */
+function Emphasize({ text, phrase }: { text: string; phrase: string }) {
+  const i = text.toLowerCase().indexOf(phrase.toLowerCase());
+  if (i < 0) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, i)}
+      <strong className="font-semibold text-foreground">{text.slice(i, i + phrase.length)}</strong>
+      {text.slice(i + phrase.length)}
+    </>
+  );
+}
+
 export function ServicePageTemplate({ slug, data }: { slug: string; data: ServicePageData }) {
   const { title, accentWord, subtitle, heroImage, whatIsIt, whoNeedsIt, supportServices, howItWorks } = data;
   const [before, after] = title.split(accentWord);
@@ -50,8 +63,7 @@ export function ServicePageTemplate({ slug, data }: { slug: string; data: Servic
         ]}
         description={data.description}
         image={heroImage}
-        imageAlt={title}
-        imagePosition="center 35%"
+        imagePosition="object-[center_35%]"
         badge={
           <div className="flex animate-float items-center gap-3 rounded-2xl glass p-4">
             <Sparkles className="h-7 w-7 text-accent" />
@@ -95,7 +107,9 @@ export function ServicePageTemplate({ slug, data }: { slug: string; data: Servic
                 </h2>
               </Reveal>
               <Reveal delay={0.12}>
-                <p className="mt-6 text-xl leading-relaxed text-foreground/75">{whatIsIt.content}</p>
+                <p className="mt-6 text-xl leading-relaxed text-foreground/75">
+                  <Emphasize text={whatIsIt.content} phrase={title} />
+                </p>
               </Reveal>
             </div>
 
@@ -200,7 +214,7 @@ export function ServicePageTemplate({ slug, data }: { slug: string; data: Servic
           />
           <div className="relative mt-16">
             <div className="absolute left-0 right-0 top-6 hidden h-px bg-foreground/10 lg:block" />
-            <motion.div
+            <m.div
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true, margin: "-20% 0px" }}

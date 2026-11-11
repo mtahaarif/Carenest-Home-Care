@@ -1,25 +1,39 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "motion/react";
 import { ArrowUpRight, CircleCheckBig, Phone } from "@/components/icons";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { Marquee } from "@/components/fx/Marquee";
-import { EASE_OUT, MaskLines } from "@/components/fx/Reveal";
 import { BannerMedia, type BannerImage } from "@/components/sections/BannerMedia";
+import { HERO_DELAYS, HeroLines } from "@/components/sections/HeroLines";
 import { Button } from "@/components/ui/button";
-import { SERVICES, serviceHref } from "@/content/site";
+import { SERVICES } from "@/content/site";
 import { IMAGES, SITE } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 const TRUST = ["Licensed, bonded & insured", "Free consultation", "Locally owned and operated"];
 
 const SLIDES: BannerImage[] = [
-  { src: IMAGES.teaConversation, alt: "Grandmother and granddaughter enjoying tea together", position: "65% center" },
-  { src: IMAGES.familyJoy, alt: "Happy family members enjoying time together", position: "70% center" },
-  { src: IMAGES.ctaBanner, alt: "Caregiver with elderly patient", position: "center 22%" },
-  { src: IMAGES.elderlyTablet, alt: "Elderly woman and daughter browsing tablet together", position: "75% center" },
+  { image: IMAGES.teaConversation, position: "object-[65%_center]" },
+  { image: IMAGES.familyJoy, position: "object-[70%_center]" },
+  { image: IMAGES.ctaBanner, position: "object-[center_22%]" },
+  { image: IMAGES.elderlyTablet, position: "object-[75%_center]" },
 ];
 
+function ServicePills() {
+  return (
+    <>
+      {SERVICES.map((s) => (
+        <span key={s.slug} className="flex items-center gap-2.5 rounded-full border border-foreground/10 bg-white/70 py-2 pl-2 pr-5 text-sm font-semibold text-foreground/80">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary/10 text-primary">
+            <s.icon className="h-4 w-4" />
+          </span>
+          {s.title}
+        </span>
+      ))}
+    </>
+  );
+}
+
+/** Home banner. Entrance animations are CSS-only so the headline paints before hydration. */
 export function HomeHero() {
   return (
     <section className="relative">
@@ -28,12 +42,7 @@ export function HomeHero() {
 
         <div className="container relative">
           <div className="max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.7, ease: EASE_OUT }}
-              className="inline-flex items-center gap-2 rounded-full glass py-1.5 pl-1.5 pr-4 text-xs font-semibold text-foreground/80"
-            >
+            <p className={cn("inline-flex animate-rise items-center gap-2 rounded-full glass py-1.5 pl-1.5 pr-4 text-xs font-semibold text-foreground/80", HERO_DELAYS[1])}>
               <span className="flex items-center gap-1.5 whitespace-nowrap rounded-full bg-primary px-2.5 py-1 text-primary-foreground">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
@@ -44,12 +53,11 @@ export function HomeHero() {
               <span className="whitespace-nowrap">
                 Cook · Lake · DuPage<span className="hidden sm:inline"> counties</span>
               </span>
-            </motion.div>
+            </p>
 
             <h1 className="mt-7 text-[2.9rem] font-extrabold leading-[0.98] tracking-tight text-foreground sm:text-6xl xl:text-[5rem]">
-              <MaskLines
-                immediate
-                delay={0.45}
+              <HeroLines
+                startIndex={2}
                 lines={[
                   "Your loved one",
                   "deserves care that",
@@ -60,22 +68,13 @@ export function HomeHero() {
               />
             </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ delay: 0.85, duration: 0.8, ease: EASE_OUT }}
-              className="mt-7 max-w-xl text-lg leading-relaxed text-foreground/75"
-            >
-              Every family faces care decisions. You want care that feels right, delivered by someone you trust. At Carenest, we work with you to find the right
-              caregiver, whether that&apos;s someone you already know or a qualified professional from our team.
-            </motion.p>
+            <p className={cn("mt-7 max-w-xl animate-rise text-lg leading-relaxed text-foreground/75", HERO_DELAYS[5])}>
+              Every family faces care decisions. You want care that feels right, delivered by someone you trust. At Carenest, we work with you to find{" "}
+              <strong className="font-semibold text-foreground">the right caregiver</strong>, whether that&apos;s someone you already know or a qualified professional
+              from our team.
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.8, ease: EASE_OUT }}
-              className="mt-9 flex flex-wrap items-center gap-4"
-            >
+            <div className={cn("mt-9 flex animate-rise flex-wrap items-center gap-4", HERO_DELAYS[6])}>
               <Magnetic>
                 <Button asChild variant="hero" size="xl">
                   <a href={SITE.phoneHref}>
@@ -85,45 +84,29 @@ export function HomeHero() {
               </Magnetic>
               <Button asChild variant="outline" size="xl">
                 <Link href="/services">
-                  Explore Your Options <ArrowUpRight />
+                  Explore home care services <ArrowUpRight />
                 </Link>
               </Button>
-            </motion.div>
+            </div>
 
-            <motion.ul
-              initial="hidden"
-              animate="visible"
-              variants={{ visible: { transition: { staggerChildren: 0.08, delayChildren: 1.15 } } }}
-              className="mt-10 flex flex-wrap gap-x-6 gap-y-3"
-            >
+            <ul className={cn("mt-10 flex animate-rise flex-wrap gap-x-6 gap-y-3", HERO_DELAYS[7])}>
               {TRUST.map((t) => (
-                <motion.li key={t} variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }} className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
+                <li key={t} className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
                   <CircleCheckBig className="h-4 w-4 text-primary" />
                   {t}
-                </motion.li>
+                </li>
               ))}
-            </motion.ul>
+            </ul>
           </div>
         </div>
       </div>
 
-      {/* Service pills marquee */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4, duration: 1 }} className="relative border-y border-foreground/5 bg-white/50 py-5 backdrop-blur-sm">
+      {/* Decorative service ticker */}
+      <div className={cn("relative animate-rise border-y border-foreground/5 bg-white/50 py-5 backdrop-blur-sm", HERO_DELAYS[8])}>
         <Marquee duration={38} trackClassName="gap-3 pr-3">
-          {SERVICES.map((s) => (
-            <Link
-              key={s.slug}
-              href={serviceHref(s.slug)}
-              className="group flex items-center gap-2.5 rounded-full border border-foreground/10 bg-white/70 py-2 pl-2 pr-5 text-sm font-semibold text-foreground/80 transition-all duration-300 hover:border-primary/40 hover:bg-primary hover:text-primary-foreground"
-            >
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-white/20 group-hover:text-white">
-                <s.icon className="h-4 w-4" />
-              </span>
-              {s.title}
-            </Link>
-          ))}
+          <ServicePills />
         </Marquee>
-      </motion.div>
+      </div>
     </section>
   );
 }

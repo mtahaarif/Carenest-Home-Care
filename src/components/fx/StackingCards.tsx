@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { m, useScroll, useTransform, type MotionValue } from "motion/react";
 import { cn } from "@/lib/utils";
 
 function StackItem({
@@ -28,9 +28,9 @@ function StackItem({
 
   return (
     <div className={cn("sticky", !isLast && "mb-[18vh]")} style={{ top: top + index * gap }}>
-      <motion.div style={{ scale, filter, transformOrigin: "50% 0%" }} className="will-change-transform">
+      <m.div style={{ scale, filter, transformOrigin: "50% 0%" }} className="will-change-transform">
         {children}
-      </motion.div>
+      </m.div>
     </div>
   );
 }

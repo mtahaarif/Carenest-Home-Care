@@ -9,7 +9,8 @@ import { SectionHeading } from "@/components/fx/SectionHeading";
 import { CTASection } from "@/components/sections/CTASection";
 import { PageHero } from "@/components/sections/PageHero";
 import { Button } from "@/components/ui/button";
-import { PERKS, QUALIFICATIONS, RESPONSIBILITIES } from "@/content/site";
+import { CAREER_FAQS, HIRING_STEPS, PERKS, QUALIFICATIONS, RESPONSIBILITIES } from "@/content/site";
+import { FaqSection } from "@/components/sections/FaqSection";
 import { IMAGES, SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -52,9 +53,12 @@ export function CaregiverContent() {
             <span className="accent-serif text-gradient pr-2">position</span>
           </>,
         ]}
-        description="Join our team of dedicated caregivers and start a rewarding career helping seniors and individuals in need."
+        description={
+          <>
+            Join our team of dedicated caregivers and start a <strong className="font-semibold text-foreground">rewarding career</strong> helping seniors and individuals in need.
+          </>
+        }
         image={IMAGES.personalCare}
-        imageAlt="Professional caregiver providing personalized care"
         badge={
           <div className="flex animate-float items-center gap-3 rounded-2xl glass p-4">
             <Clock className="h-7 w-7 text-primary" />
@@ -168,6 +172,47 @@ export function CaregiverContent() {
           </aside>
         </div>
       </section>
+
+      {/* How to apply */}
+      <section className="py-20 md:py-28">
+        <div className="container">
+          <SectionHeading
+            eyebrow="How to apply"
+            title={
+              <>
+                From application to <span className="accent-serif text-primary">first shift</span>
+              </>
+            }
+            description="Getting started is simple. Here is what you can expect when you apply for the caregiver position."
+          />
+          <RevealGroup className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" stagger={0.08}>
+            {HIRING_STEPS.map((step, i) => (
+              <RevealItem key={step.title}>
+                <div className="h-full rounded-[1.75rem] border border-foreground/5 bg-card p-7 shadow-card">
+                  <div className="flex items-center justify-between">
+                    <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-gradient text-white">
+                      <step.icon className="h-6 w-6" />
+                    </span>
+                    <span className="text-3xl font-extrabold tracking-tighter text-foreground/10">0{i + 1}</span>
+                  </div>
+                  <h3 className="mt-6 text-xl font-bold text-foreground">{step.title}</h3>
+                  <p className="mt-2 text-muted-foreground">{step.description}</p>
+                </div>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
+      </section>
+
+      <FaqSection
+        eyebrow="Applicant FAQs"
+        title={
+          <>
+            Before you <span className="accent-serif text-primary">apply</span>
+          </>
+        }
+        items={[CAREER_FAQS[0], CAREER_FAQS[1], CAREER_FAQS[4]]}
+      />
 
       <CTASection
         eyebrow="Ready to make a difference?"

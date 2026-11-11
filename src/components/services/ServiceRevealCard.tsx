@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/icons";
 import { serviceHref, type ServiceSummary } from "@/content/site";
@@ -9,9 +10,11 @@ export function ServiceRevealCard({ service, index }: { service: ServiceSummary;
       href={serviceHref(service.slug)}
       className="group relative block h-[30rem] w-[78vw] shrink-0 overflow-hidden rounded-[2rem] bg-ink sm:w-[22rem] lg:h-[32rem] lg:w-[24rem]"
     >
-      <img
-        src={service.image}
-        alt={service.title}
+      <Image
+        src={service.image.src}
+        alt=""
+        sizes="(min-width: 1024px) 384px, (min-width: 640px) 352px, 78vw"
+        placeholder="blur"
         draggable={false}
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
       />
@@ -29,7 +32,7 @@ export function ServiceRevealCard({ service, index }: { service: ServiceSummary;
         <span className="mb-4 grid h-12 w-12 place-items-center rounded-2xl glass-dark">
           <service.icon className="h-6 w-6 text-accent" />
         </span>
-        <h3 className="text-2xl font-bold">{service.title}</h3>
+        <p className="text-2xl font-bold">{service.title}</p>
         <div className="grid grid-rows-[1fr] transition-all duration-500 lg:grid-rows-[0fr] lg:group-hover:grid-rows-[1fr]">
           <div className="overflow-hidden">
             <p className="pt-2 text-white/80">{service.description}</p>

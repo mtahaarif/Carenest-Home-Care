@@ -1,11 +1,19 @@
-import type { Metadata } from "next";
 import { ContactContent } from "./ContactContent";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { CONTACT_FAQS } from "@/content/site";
+import { breadcrumbJsonLd, faqJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact Us",
-  description: "Ready to learn more about our home care services? Reach Carenest Homecare by phone, email, or our contact form.",
-};
+export const metadata = pageMetadata({
+  title: "Contact Us — Free Home Care Consultation",
+  description: "Ready to learn more about our home care services? Call, email, or send a message to Carenest Homecare for a free, no-pressure consultation.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
-  return <ContactContent />;
+  return (
+    <>
+      <JsonLd data={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]), faqJsonLd(CONTACT_FAQS)]} />
+      <ContactContent />
+    </>
+  );
 }

@@ -11,7 +11,8 @@ import { SectionHeading } from "@/components/fx/SectionHeading";
 import { CTASection } from "@/components/sections/CTASection";
 import { PageHero } from "@/components/sections/PageHero";
 import { Button } from "@/components/ui/button";
-import { CAREER_BENEFITS, OPENINGS, REQUIREMENTS } from "@/content/site";
+import { CAREER_BENEFITS, CAREER_FAQS, OPENINGS, REQUIREMENTS } from "@/content/site";
+import { FaqSection } from "@/components/sections/FaqSection";
 import { IMAGES, SITE } from "@/lib/site";
 
 export function CareersContent() {
@@ -26,9 +27,12 @@ export function CareersContent() {
             <span className="accent-serif text-gradient pr-2">team</span>
           </>,
         ]}
-        description="Make a real difference in people's lives. Join our team of compassionate caregivers and build a rewarding career."
+        description={
+          <>
+            Make a real difference in people&apos;s lives. Join our team of compassionate caregivers and build a <strong className="font-semibold text-foreground">rewarding career</strong>.
+          </>
+        }
         image={IMAGES.patientCare}
-        imageAlt="Caregiver supporting an elderly client"
         badge={
           <div className="flex animate-float items-center gap-3 rounded-2xl glass p-4">
             <Heart className="h-7 w-7 fill-accent text-accent" />
@@ -156,6 +160,17 @@ export function CareersContent() {
           </div>
         </div>
       </section>
+
+      <FaqSection
+        eyebrow="Careers FAQs"
+        title={
+          <>
+            Questions about <span className="accent-serif text-primary">caregiving jobs</span>
+          </>
+        }
+        description="What to expect when you apply to join the Carenest team."
+        items={CAREER_FAQS}
+      />
 
       <CTASection
         eyebrow="Ready to make a difference?"

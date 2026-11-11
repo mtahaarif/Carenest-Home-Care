@@ -8,7 +8,7 @@ import { Magnetic } from "@/components/fx/Magnetic";
 import { ParallaxImage } from "@/components/fx/Parallax";
 import { Reveal } from "@/components/fx/Reveal";
 import { Button } from "@/components/ui/button";
-import { IMAGES, SITE } from "@/lib/site";
+import { IMAGES, SITE, type SiteImage } from "@/lib/site";
 
 interface CTASectionProps {
   eyebrow?: string;
@@ -16,7 +16,7 @@ interface CTASectionProps {
   description?: string;
   primary?: { label: string; href: string; external?: boolean };
   secondary?: { label: string; href: string } | null;
-  image?: string;
+  image?: SiteImage;
 }
 
 /** Gradient call-to-action band with parallax imagery and glass chips. */
@@ -75,7 +75,7 @@ export function CTASection({
               </div>
             </div>
             <div className="relative min-h-72 lg:min-h-full">
-              <ParallaxImage src={image} alt="" className="absolute inset-0 lg:[mask-image:linear-gradient(to_right,transparent,black_35%)]" imgClassName="object-[center_20%]" />
+              <ParallaxImage image={image} alt="" sizes="(min-width: 1024px) 40vw, 92vw" className="absolute inset-0 lg:[mask-image:linear-gradient(to_right,transparent,black_35%)]" imgClassName="object-[center_20%]" />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent lg:hidden" />
               <div className="absolute bottom-6 right-6 hidden animate-float rounded-2xl glass-dark px-5 py-4 sm:block">
                 <p className="text-xs uppercase tracking-[0.2em] text-ink-foreground/60">Licensed</p>

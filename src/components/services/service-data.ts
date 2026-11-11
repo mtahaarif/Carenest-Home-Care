@@ -1,4 +1,4 @@
-import { IMAGES } from "@/lib/site";
+import { IMAGES, type SiteImage } from "@/lib/site";
 
 export interface ServicePageData {
   title: string;
@@ -6,7 +6,7 @@ export interface ServicePageData {
   subtitle: string;
   /** Long-form summary (kept from the original content model; not rendered by the template). */
   description: string;
-  heroImage?: string;
+  heroImage?: SiteImage;
   whatIsIt: { title: string; content: string };
   whoNeedsIt: { title: string; points: string[] };
   supportServices: { title: string; desc: string }[];
@@ -282,3 +282,35 @@ export const SERVICE_PAGES = {
 } satisfies Record<string, ServicePageData>;
 
 export type ServiceSlug = keyof typeof SERVICE_PAGES;
+
+/** Search-snippet descriptions (kept under ~155 characters). */
+export const SERVICE_SEO: Record<ServiceSlug, { title: string; description: string }> = {
+  "traditional-home-care": {
+    title: "Traditional Home Care in Chicago, IL",
+    description: "Traditional home care in Chicagoland: help with bathing, dressing, meals, housekeeping and companionship so loved ones stay independent at home.",
+  },
+  "24-hour-care": {
+    title: "24-Hour Home Care in Chicago, IL",
+    description: "Round-the-clock 24-hour home care in Chicagoland. Caregivers work in shifts to provide supervision, personal care and peace of mind, day or night.",
+  },
+  "alzheimer-care": {
+    title: "Alzheimer's Care at Home in Chicago, IL",
+    description: "In-home Alzheimer's care in Chicagoland. Trained caregivers offer memory support, safety monitoring, routines and compassionate daily help.",
+  },
+  "dementia-care": {
+    title: "Dementia Care at Home in Chicago, IL",
+    description: "In-home dementia care for vascular, Lewy body and frontotemporal dementia, with caregivers trained to support changing cognitive needs.",
+  },
+  "senior-care": {
+    title: "Senior Home Care in Chicago, IL",
+    description: "Senior home care in Chicagoland: daily living help, medication reminders, mobility support, meals and companionship so seniors age safely at home.",
+  },
+  "personal-care": {
+    title: "Personal Care at Home in Chicago, IL",
+    description: "Dignified personal care at home: help with bathing, grooming, dressing, toileting and mobility from trained caregivers in the Chicago area.",
+  },
+  "companion-care": {
+    title: "Companion Care for Seniors in Chicago, IL",
+    description: "Companion care that eases loneliness: conversation, activities, shared meals and outings with a trusted caregiver in Cook, Lake and DuPage counties.",
+  },
+};

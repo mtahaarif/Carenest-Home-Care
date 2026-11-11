@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
+import { AnimatePresence, m, useInView, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "@/components/icons";
 import { EASE_OUT, Reveal } from "@/components/fx/Reveal";
 import { SectionHeading } from "@/components/fx/SectionHeading";
@@ -73,9 +74,11 @@ export function CareShowcase() {
                     open ? "h-[26rem] lg:h-auto" : "h-[5.5rem] lg:h-auto",
                   )}
                 >
-                  <img
-                    src={s.image}
-                    alt={s.title}
+                  <Image
+                    src={s.image.src}
+                    alt={s.image.alt}
+                    sizes="(min-width: 1024px) 60vw, 92vw"
+                    placeholder="blur"
                     className={cn(
                       "absolute inset-0 h-full w-full object-cover transition-all duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)]",
                       open ? "scale-100 opacity-100" : "scale-110 opacity-60 grayscale-[40%]",
@@ -86,7 +89,7 @@ export function CareShowcase() {
                   {/* Auto-advance progress */}
                   {open && (
                     <div className="absolute inset-x-6 top-5 h-[3px] overflow-hidden rounded-full bg-white/20">
-                      <motion.div
+                      <m.div
                         key={`${active}-${autoplay}`}
                         className="h-full rounded-full bg-accent"
                         initial={{ width: autoplay ? "0%" : "100%" }}
@@ -115,7 +118,7 @@ export function CareShowcase() {
                   {/* Expanded content */}
                   <AnimatePresence>
                     {open && (
-                      <motion.div
+                      <m.div
                         key={s.slug}
                         initial="hidden"
                         animate="visible"
@@ -123,19 +126,19 @@ export function CareShowcase() {
                         variants={{ visible: { transition: { staggerChildren: 0.07, delayChildren: 0.25 } } }}
                         className="absolute inset-x-0 bottom-0 p-6 text-white md:p-10"
                       >
-                        <motion.div variants={item} className="flex items-center gap-3">
+                        <m.div variants={item} className="flex items-center gap-3">
                           <span className="grid h-12 w-12 place-items-center rounded-2xl glass-dark text-accent">
                             <s.icon className="h-6 w-6" />
                           </span>
                           <span className="eyebrow text-white/70">Service 0{i + 1}</span>
-                        </motion.div>
-                        <motion.h3 variants={item} className="mt-5 text-3xl font-bold leading-tight md:text-5xl">
+                        </m.div>
+                        <m.h3 variants={item} className="mt-5 text-3xl font-bold leading-tight md:text-5xl">
                           {s.title}
-                        </motion.h3>
-                        <motion.p variants={item} className="mt-3 max-w-md text-base text-white/80 md:text-lg">
+                        </m.h3>
+                        <m.p variants={item} className="mt-3 max-w-md text-base text-white/80 md:text-lg">
                           {s.description}
-                        </motion.p>
-                        <motion.div variants={item} className="mt-7">
+                        </m.p>
+                        <m.div variants={item} className="mt-7">
                           <Link
                             href={serviceHref(s.slug)}
                             className="group/link inline-flex items-center gap-3 rounded-full bg-white py-2 pl-5 pr-2 text-sm font-semibold text-ink transition-colors hover:bg-accent"
@@ -145,8 +148,8 @@ export function CareShowcase() {
                               <ArrowUpRight className="h-4 w-4" />
                             </span>
                           </Link>
-                        </motion.div>
-                      </motion.div>
+                        </m.div>
+                      </m.div>
                     )}
                   </AnimatePresence>
                 </div>

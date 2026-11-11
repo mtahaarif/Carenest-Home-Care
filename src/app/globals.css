@@ -83,6 +83,28 @@
   --animate-float: float 6s ease-in-out infinite;
   --animate-spin-slow: spin 18s linear infinite;
   --animate-shine: shine 3.5s ease-in-out infinite;
+  /* CSS-only entrance animations for above-the-fold content: they run on first paint, before hydration. */
+  --animate-rise: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-mask-up: mask-up 0.95s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-grow-x: grow-x 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pop: pop 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes mask-up {
+    from { transform: translateY(110%) rotate(2deg); }
+    to { transform: none; }
+  }
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(24px) scale(0.92); }
+    to { opacity: 1; transform: none; }
+  }
 
   @keyframes accordion-down {
     from { height: 0; opacity: 0; }
@@ -228,6 +250,17 @@ html.lenis body {
     radial-gradient(80% 80% at 100% 100%, hsl(38 70% 30% / 0.35) 0%, transparent 60%);
 }
 
+/* Left-to-right legibility wash for photo banners */
+@utility bg-banner-wash {
+  background-image: linear-gradient(
+    to right,
+    hsl(var(--background)) 0%,
+    hsl(var(--background) / 0.94) 26%,
+    hsl(var(--background) / 0.6) 46%,
+    hsl(var(--background) / 0) 66%
+  );
+}
+
 /* Subtle dotted grid background */
 @utility bg-dots {
   background-image: radial-gradient(hsl(var(--foreground) / 0.08) 1px, transparent 1px);
@@ -293,6 +326,11 @@ html.lenis body {
     opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
+}
+
+/* Ambient, never-ending animations wait for the visitor's first interaction (see use-user-engaged). */
+html:not([data-engaged]) :is(.animate-marquee, .animate-marquee-reverse, .animate-aurora, .animate-float, .animate-ping) {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {

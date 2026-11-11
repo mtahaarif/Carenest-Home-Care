@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, HeartHandshake } from "@/components/icons";
 import { Reveal } from "@/components/fx/Reveal";
@@ -15,7 +16,7 @@ export function ProblemsStack() {
     ...PROBLEMS.map((p, i) => (
       <article key={p.title} className="grid overflow-hidden rounded-[2rem] border border-foreground/5 bg-card shadow-elevated md:grid-cols-[1fr_1.1fr]">
         <div className="relative h-56 md:h-auto">
-          <img src={IMAGES_FOR[i]} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <Image src={IMAGES_FOR[i].src} alt="" sizes="(min-width: 1024px) 28vw, (min-width: 768px) 45vw, 90vw" placeholder="blur" className="absolute inset-0 h-full w-full object-cover" />
           <span className="absolute left-4 top-4 rounded-full glass px-3 py-1 text-xs font-bold text-foreground">0{i + 1}</span>
         </div>
         <div className="relative p-8 md:p-10">

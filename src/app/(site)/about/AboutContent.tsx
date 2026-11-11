@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, BadgeCheck } from "@/components/icons";
 import { GlowCard } from "@/components/fx/GlowCard";
@@ -19,6 +20,7 @@ const STORY = [
   {
     label: "The question",
     text: "Carenest Homecare was born from a simple question: Why can't families have more control over how care is delivered in their homes?",
+    emphasis: "Why can't families have more control over how care is delivered in their homes?",
   },
   {
     label: "What we saw",
@@ -26,6 +28,7 @@ const STORY = [
   },
   {
     label: "Our answer",
+    emphasis: "a flexible model",
     text: "So we built Carenest around a flexible model: whether you have someone in mind or need us to find the right caregiver, we handle training, certification, payroll, and insurance. You get professional care that feels personal, because we take the time to understand your needs.",
   },
 ];
@@ -44,7 +47,6 @@ export function AboutContent() {
         ]}
         description="A fresh approach to home care, built on the belief that families deserve personalized care that truly fits their needs."
         image={IMAGES.familyJoy}
-        imageAlt="Happy family moments"
         badge={
           <div className="flex animate-float items-center gap-3 rounded-2xl glass p-4">
             <BadgeCheck className="h-8 w-8 text-primary" />
@@ -78,7 +80,7 @@ export function AboutContent() {
               }
             />
             <Reveal delay={0.2} className="mt-10 hidden lg:block">
-              <ParallaxImage src={IMAGES.teaConversation} alt="" className="aspect-[4/3] rounded-[2rem] shadow-elevated" />
+              <ParallaxImage image={IMAGES.teaConversation} sizes="(min-width: 1024px) 40vw, 90vw" className="aspect-[4/3] rounded-[2rem] shadow-elevated" />
             </Reveal>
           </div>
 
@@ -94,7 +96,17 @@ export function AboutContent() {
                   {i === 1 ? (
                     <TextReveal text={s.text} className="mt-6 text-2xl font-semibold leading-snug md:text-3xl" highlight={["who's", "coming", "today"]} />
                   ) : (
-                    <p className="mt-6 text-xl leading-relaxed text-foreground/85 md:text-2xl">{s.text}</p>
+                    <p className="mt-6 text-xl leading-relaxed text-foreground/85 md:text-2xl">
+                      {s.emphasis ? (
+                        <>
+                          {s.text.slice(0, s.text.indexOf(s.emphasis))}
+                          <strong className="font-semibold text-foreground">{s.emphasis}</strong>
+                          {s.text.slice(s.text.indexOf(s.emphasis) + s.emphasis.length)}
+                        </>
+                      ) : (
+                        s.text
+                      )}
+                    </p>
                   )}
                 </article>
               </Reveal>
@@ -118,7 +130,7 @@ export function AboutContent() {
           <RevealGroup className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2" stagger={0.1}>
             <RevealItem className="md:col-span-2 lg:row-span-2">
               <div className="group relative h-full min-h-[26rem] overflow-hidden rounded-[2rem]">
-                <img src={IMAGES.familyTogether} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                <Image src={IMAGES.familyTogether.src} alt={IMAGES.familyTogether.alt} sizes="(min-width: 1024px) 50vw, 92vw" placeholder="blur" className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-8 text-white md:p-10">
                   {(() => {
@@ -161,6 +173,7 @@ export function AboutContent() {
                 Why choose <span className="accent-serif text-primary">Carenest?</span>
               </>
             }
+            description="Families across Cook, Lake, and DuPage counties choose Carenest for a flexible, transparent approach to in-home care — with one point of contact, always."
           />
           <RevealGroup className="mt-14 grid border-t border-foreground/10 md:grid-cols-2 md:gap-x-10" stagger={0.06}>
             {REASONS.map((r, i) => (

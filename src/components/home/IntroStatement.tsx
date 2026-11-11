@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Reveal } from "@/components/fx/Reveal";
 import { ParallaxImage } from "@/components/fx/Parallax";
 import { TextReveal } from "@/components/fx/TextReveal";
@@ -12,9 +13,9 @@ export function IntroStatement() {
       <div className="container relative grid items-center gap-14 lg:grid-cols-[0.75fr_1.25fr]">
         <Reveal direction="right" className="relative mx-auto w-full max-w-sm">
           <div className="absolute -inset-4 rotate-[-4deg] rounded-[2.5rem] bg-primary/15" />
-          <ParallaxImage src={IMAGES.elderlyTablet} alt="Elderly woman and daughter browsing tablet together" className="relative aspect-[3/4] rounded-[2.5rem] shadow-elevated" />
+          <ParallaxImage image={IMAGES.granddaughterGrandma} imgClassName="object-[30%_center]" sizes="(min-width: 1024px) 384px, 90vw" className="relative aspect-[3/4] rounded-[2.5rem] shadow-elevated" />
           <div className="absolute -bottom-8 -right-6 flex items-center gap-3 rounded-3xl glass p-3 pr-5">
-            <img src={IMAGES.logo} alt="Carenest Home Care" className="h-16 w-auto rounded-2xl bg-white object-contain p-1.5" />
+            <Image src={IMAGES.logo.src} alt="" sizes="90px" className="h-16 w-auto rounded-2xl bg-white object-contain p-1.5" />
             <span>
               <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">We are</span>
               <span className="block text-lg font-extrabold text-foreground">Carenest</span>

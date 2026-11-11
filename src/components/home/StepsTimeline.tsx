@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useSpring } from "motion/react";
+import { m, useScroll, useSpring } from "motion/react";
 import { GlowCard } from "@/components/fx/GlowCard";
 import { Reveal } from "@/components/fx/Reveal";
 import { SectionHeading } from "@/components/fx/SectionHeading";
@@ -29,7 +29,7 @@ export function StepsTimeline() {
 
         <div ref={ref} className="relative mx-auto mt-20 max-w-5xl">
           <div className="absolute bottom-0 left-6 top-0 w-px bg-foreground/10 md:left-1/2 md:-translate-x-1/2" />
-          <motion.div style={{ scaleY }} className="absolute bottom-0 left-6 top-0 w-px origin-top bg-gradient-to-b from-primary via-primary-light to-accent md:left-1/2 md:-translate-x-1/2" />
+          <m.div style={{ scaleY }} className="absolute bottom-0 left-6 top-0 w-px origin-top bg-gradient-to-b from-primary via-primary-light to-accent md:left-1/2 md:-translate-x-1/2" />
 
           <div className="space-y-16 md:space-y-24">
             {STEPS.map((step, i) => {

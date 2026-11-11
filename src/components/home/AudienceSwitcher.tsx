@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { ArrowUpRight, Check } from "@/components/icons";
 import { EASE_OUT, Reveal } from "@/components/fx/Reveal";
 import { Button } from "@/components/ui/button";
@@ -66,7 +67,7 @@ export function AudienceSwitcher() {
                   onClick={() => setActive(key)}
                   className={cn("relative rounded-full px-5 py-2.5 text-sm font-semibold transition-colors", active === key ? "text-ink" : "text-ink-foreground/70 hover:text-ink-foreground")}
                 >
-                  {active === key && <motion.span layoutId="audience-pill" className="absolute inset-0 rounded-full bg-accent" transition={{ type: "spring", stiffness: 400, damping: 34 }} />}
+                  {active === key && <m.span layoutId="audience-pill" className="absolute inset-0 rounded-full bg-accent" transition={{ type: "spring", stiffness: 400, damping: 34 }} />}
                   <span className="relative">{AUDIENCES[key].tab}</span>
                 </button>
               ))}
@@ -75,7 +76,7 @@ export function AudienceSwitcher() {
 
           <div className="relative mt-12 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={`${active}-img`}
                 initial={{ opacity: 0, clipPath: "inset(0 0 0 100% round 2rem)" }}
                 animate={{ opacity: 1, clipPath: "inset(0 0 0 0% round 2rem)" }}
@@ -83,45 +84,47 @@ export function AudienceSwitcher() {
                 transition={{ duration: 0.7, ease: EASE_OUT }}
                 className="relative aspect-[4/3] overflow-hidden rounded-[2rem]"
               >
-                <motion.img initial={{ scale: 1.2 }} animate={{ scale: 1 }} transition={{ duration: 1.2, ease: EASE_OUT }} src={a.image} alt={a.alt} className="h-full w-full object-cover" />
-              </motion.div>
+                <m.div initial={{ scale: 1.2 }} animate={{ scale: 1 }} transition={{ duration: 1.2, ease: EASE_OUT }} className="absolute inset-0">
+                  <Image src={a.image.src} alt="" sizes="(min-width: 1024px) 45vw, 90vw" placeholder="blur" className="h-full w-full object-cover" />
+                </m.div>
+              </m.div>
             </AnimatePresence>
 
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={`${active}-copy`}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
                 variants={{ visible: { transition: { staggerChildren: 0.06 } }, exit: { opacity: 0, y: -10, transition: { duration: 0.25 } } }}
               >
-                <motion.p variants={item} className="eyebrow text-accent">
+                <m.p variants={item} className="eyebrow text-accent">
                   {a.kicker}
-                </motion.p>
-                <motion.h3 variants={item} className="mt-4 text-4xl font-bold leading-tight md:text-5xl">
+                </m.p>
+                <m.h3 variants={item} className="mt-4 text-4xl font-bold leading-tight md:text-5xl">
                   {a.title}
-                </motion.h3>
-                <motion.p variants={item} className="mt-5 text-lg leading-relaxed text-ink-foreground/70">
+                </m.h3>
+                <m.p variants={item} className="mt-5 text-lg leading-relaxed text-ink-foreground/70">
                   {a.body}
-                </motion.p>
+                </m.p>
                 <ul className="mt-8 grid gap-3 sm:grid-cols-2">
                   {a.items.map((it) => (
-                    <motion.li key={it} variants={item} className="flex items-start gap-3 rounded-2xl glass-dark p-4 text-sm font-medium">
+                    <m.li key={it} variants={item} className="flex items-start gap-3 rounded-2xl glass-dark p-4 text-sm font-medium">
                       <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
                         <Check className="h-3.5 w-3.5" />
                       </span>
                       {it}
-                    </motion.li>
+                    </m.li>
                   ))}
                 </ul>
-                <motion.div variants={item} className="mt-9">
+                <m.div variants={item} className="mt-9">
                   <Button asChild variant="accent" size="xl">
                     <Link href={a.cta.href}>
                       {a.cta.label} <ArrowUpRight />
                     </Link>
                   </Button>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             </AnimatePresence>
           </div>
         </div>

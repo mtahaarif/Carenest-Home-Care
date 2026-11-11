@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { ArrowUpRight, Briefcase, Check, HandHeart, HeartHandshake, Loader2, Mail, MapPin, MessageCircle, Phone, Send } from "@/components/icons";
 import { GlowCard } from "@/components/fx/GlowCard";
 import { EASE_OUT, Reveal, RevealGroup, RevealItem } from "@/components/fx/Reveal";
@@ -11,9 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { USER_TYPES } from "@/content/site";
+import { Toaster } from "@/components/ui/toaster";
+import { CONTACT_FAQS, USER_TYPES } from "@/content/site";
+import { StepsTimeline } from "@/components/home/StepsTimeline";
+import { FaqSection } from "@/components/sections/FaqSection";
 import { useToast } from "@/hooks/use-toast";
-import { getSupabase } from "@/lib/supabase";
 import { IMAGES, SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -43,6 +45,8 @@ export function ContactContent() {
     const userTypeLabel = USER_TYPES.find((t) => t.value === formData.userType)?.label;
 
     try {
+      // Loaded on demand so the Supabase client never weighs down the initial page bundle.
+      const { getSupabase } = await import("@/lib/supabase");
       const supabase = getSupabase();
       if (formData.userType === "caregiver-no-client") {
         const { error } = await supabase.from("career_applications").insert({
@@ -102,7 +106,6 @@ export function ContactContent() {
         ]}
         description="Ready to learn more about our home care services? We're here to help."
         image={IMAGES.teaConversation}
-        imageAlt="Grandmother and granddaughter enjoying tea together"
         actions={
           <>
             <Button asChild variant="hero" size="xl">
@@ -131,7 +134,7 @@ export function ContactContent() {
             <Reveal delay={0.08}>
               <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
                 At Carenest, we understand that navigating your care options can sometimes feel overwhelming. That is why we are here to help. If you have any questions
-                about our services or need guidance in making the best decisions for your unique situation, please fill out the form and one of our caring team members
+                about our services or need guidance in making the best decisions for your unique situation, please <strong className="font-semibold text-foreground">fill out the form</strong> and one of our caring team members
                 will be in touch.
               </p>
             </Reveal>
@@ -161,7 +164,7 @@ export function ContactContent() {
               <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
               <AnimatePresence mode="wait">
                 {sent ? (
-                  <motion.div
+                  <m.div
                     key="sent"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -169,22 +172,22 @@ export function ContactContent() {
                     transition={{ duration: 0.5, ease: EASE_OUT }}
                     className="flex min-h-[32rem] flex-col items-center justify-center text-center"
                   >
-                    <motion.span
+                    <m.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ type: "spring", stiffness: 260, damping: 16, delay: 0.15 }}
                       className="grid h-20 w-20 place-items-center rounded-full bg-brand-gradient text-white shadow-glow"
                     >
                       <Check className="h-10 w-10" />
-                    </motion.span>
+                    </m.span>
                     <h3 className="mt-8 text-3xl font-bold text-foreground">Message received!</h3>
                     <p className="mt-3 max-w-sm text-muted-foreground">Thank you for reaching out. We will be in touch soon.</p>
                     <Button variant="outline" className="mt-8" onClick={() => setSent(false)}>
                       Send another message
                     </Button>
-                  </motion.div>
+                  </m.div>
                 ) : (
-                  <motion.form key="form" exit={{ opacity: 0, y: -10 }} onSubmit={handleSubmit} className="relative flex flex-col gap-6">
+                  <m.form key="form" method="post" exit={{ opacity: 0, y: -10 }} onSubmit={handleSubmit} className="relative flex flex-col gap-6">
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="flex flex-col gap-2">
                         <Label htmlFor="firstName">First Name *</Label>
@@ -233,14 +236,14 @@ export function ContactContent() {
                               <span className="pr-5 font-medium leading-snug text-foreground">{t.label}</span>
                               <AnimatePresence>
                                 {checked && (
-                                  <motion.span
+                                  <m.span
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     exit={{ scale: 0 }}
                                     className="absolute right-3 top-3 grid h-5 w-5 place-items-center rounded-full bg-primary text-primary-foreground"
                                   >
                                     <Check className="h-3 w-3" />
-                                  </motion.span>
+                                  </m.span>
                                 )}
                               </AnimatePresence>
                             </label>
@@ -270,7 +273,7 @@ export function ContactContent() {
                         </>
                       )}
                     </Button>
-                  </motion.form>
+                  </m.form>
                 )}
               </AnimatePresence>
             </div>
@@ -278,7 +281,21 @@ export function ContactContent() {
         </div>
       </section>
 
+      <StepsTimeline />
+
+      <FaqSection
+        eyebrow="Before you reach out"
+        title={
+          <>
+            Common <span className="accent-serif text-primary">questions</span>
+          </>
+        }
+        description="Answers to the questions families ask most when they first contact us."
+        items={CONTACT_FAQS}
+      />
+
       <ServiceArea />
+      <Toaster />
     </>
   );
 }
