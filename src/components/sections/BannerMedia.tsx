@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import { AnimatePresence, m, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { ChevronLeft, ChevronRight } from "@/components/icons";
 import { useUserEngaged } from "@/hooks/use-user-engaged";

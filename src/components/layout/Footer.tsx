@@ -4,7 +4,7 @@ import Link from "next/link";
 import { m, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { useLenis } from "lenis/react";
-import { ArrowUp, ArrowUpRight, Instagram, Mail, MapPin, Phone, Sparkle } from "@/components/icons";
+import { ArrowUp, ArrowUpRight, Instagram, Mail, MapPin, Phone } from "@/components/icons";
 import { Marquee } from "@/components/fx/Marquee";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { SERVICES, TRADITIONAL_CARE, serviceHref } from "@/content/site";
@@ -14,7 +14,7 @@ import { Logo } from "./Logo";
 const QUICK_LINKS = [
   { label: "About Carenest", href: "/about" },
   { label: "All home care services", href: "/services" },
-  { label: "Areas we serve", href: "/area-of-service" },
+  { label: "Cook, Lake & DuPage coverage", href: "/area-of-service" },
   { label: "Careers at Carenest", href: "/careers" },
   { label: "Caregiver job opening", href: "/careers/caregiver" },
   { label: "Contact our team", href: "/contact" },
@@ -38,7 +38,7 @@ export function Footer() {
           {SERVICES.map((s) => (
             <span key={s.slug} className="flex items-center gap-10">
               <span className="text-4xl font-bold tracking-tight text-ink-foreground/90 md:text-6xl">{s.title}</span>
-              <Sparkle className="h-7 w-7 shrink-0 fill-accent text-accent md:h-9 md:w-9" aria-hidden />
+              <span aria-hidden className="shape-sparkle h-7 w-7 shrink-0 text-accent md:h-9 md:w-9" />
             </span>
           ))}
         </Marquee>
@@ -46,7 +46,7 @@ export function Footer() {
 
       <div className="container relative grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12 lg:py-20">
         <div className="lg:col-span-4">
-          <Logo tone="dark" decorative imgClassName="h-28" />
+          <Logo tone="dark" alt="Back to the Carenest Home Care homepage" imgClassName="h-28" />
           <p className="mt-6 max-w-sm leading-relaxed text-ink-foreground/65">
             Home care, your way. Personalized care solutions tailored to your family&apos;s needs across Cook, Lake, and DuPage counties.
           </p>

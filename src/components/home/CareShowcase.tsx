@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import Link from "next/link";
 import { AnimatePresence, m, useInView, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "@/components/icons";
@@ -78,7 +78,6 @@ export function CareShowcase() {
                     src={s.image.src}
                     alt={s.image.alt}
                     sizes="(min-width: 1024px) 60vw, 92vw"
-                    placeholder="blur"
                     className={cn(
                       "absolute inset-0 h-full w-full object-cover transition-all duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)]",
                       open ? "scale-100 opacity-100" : "scale-110 opacity-60 grayscale-[40%]",

@@ -46,7 +46,7 @@ export function CaregiverContent() {
     <>
       <PageHero
         eyebrow="Career opportunity"
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Careers", href: "/careers" }, { label: "Caregiver" }]}
+        breadcrumbs={[{ label: "Carenest Homecare", href: "/" }, { label: "Careers at Carenest", href: "/careers" }, { label: "Caregiver" }]}
         title={[
           "Caregiver",
           <>

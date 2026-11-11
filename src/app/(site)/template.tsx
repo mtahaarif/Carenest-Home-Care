@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import { m } from "motion/react";
 import { IMAGES } from "@/lib/site";
 

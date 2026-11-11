@@ -310,7 +310,7 @@ export const SERVICE_SEO: Record<ServiceSlug, { title: string; description: stri
     description: "Dignified personal care at home: help with bathing, grooming, dressing, toileting and mobility from trained caregivers in the Chicago area.",
   },
   "companion-care": {
-    title: "Companion Care for Seniors in Chicago, IL",
+    title: "Companion Care in Chicago, IL",
     description: "Companion care that eases loneliness: conversation, activities, shared meals and outings with a trusted caregiver in Cook, Lake and DuPage counties.",
   },
 };

@@ -35,6 +35,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    // Cap generated widths at 1920px (no 2048/3840 variants) and allow a lighter photo quality.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1600, 1920],
+    qualities: [70, 75],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
   async headers() {

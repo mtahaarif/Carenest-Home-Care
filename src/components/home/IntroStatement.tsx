@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import { Reveal } from "@/components/fx/Reveal";
 import { ParallaxImage } from "@/components/fx/Parallax";
 import { TextReveal } from "@/components/fx/TextReveal";

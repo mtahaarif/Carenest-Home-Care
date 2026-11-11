@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { IMAGES } from "@/lib/site";
@@ -10,12 +10,12 @@ interface LogoProps {
   /** On dark surfaces the logo sits on a light card so the teal script stays legible. */
   tone?: "light" | "dark";
   onClick?: () => void;
-  /** Hide the alt text when the logo is repeated on the page (the link keeps its aria-label). */
-  decorative?: boolean;
+  /** Alt text — it doubles as the link text, so describe the destination when the logo repeats. */
+  alt?: string;
   preload?: boolean;
 }
 
-export function Logo({ className, imgClassName, tone = "light", onClick, decorative = false, preload = false }: LogoProps) {
+export function Logo({ className, imgClassName, tone = "light", onClick, alt = IMAGES.logo.alt, preload = false }: LogoProps) {
   return (
     <Link
       href="/"
@@ -25,8 +25,9 @@ export function Logo({ className, imgClassName, tone = "light", onClick, decorat
     >
       <Image
         src={IMAGES.logo.src}
-        alt={decorative ? "" : IMAGES.logo.alt}
-        sizes="(min-width: 768px) 120px, 90px"
+        alt={alt}
+        width={140}
+        height={112}
         preload={preload}
         fetchPriority={preload ? "high" : "auto"}
         className={cn("h-14 w-auto transition-all duration-500 ease-out group-hover:scale-[1.04]", imgClassName)}

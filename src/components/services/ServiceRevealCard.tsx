@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/icons";
 import { serviceHref, type ServiceSummary } from "@/content/site";
@@ -14,7 +14,6 @@ export function ServiceRevealCard({ service, index }: { service: ServiceSummary;
         src={service.image.src}
         alt=""
         sizes="(min-width: 1024px) 384px, (min-width: 640px) 352px, 78vw"
-        placeholder="blur"
         draggable={false}
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
       />

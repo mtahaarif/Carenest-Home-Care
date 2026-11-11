@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, m, useMotionValueEvent, useScroll } from "motion/react";
@@ -18,7 +18,7 @@ import { Logo } from "./Logo";
 const NAV = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Services", href: "/services", mega: true },
+  { label: "Our Services", href: "/services", mega: true },
   { label: "Areas We Serve", href: "/area-of-service" },
   { label: "Careers", href: "/careers" },
   { label: "Contact Us", href: "/contact" },
@@ -94,7 +94,7 @@ export function Header() {
                     onFocus={() => (item.mega ? openMega() : setMegaOpen(false))}
                     aria-expanded={item.mega ? megaOpen : undefined}
                     className={cn(
-                      "relative flex items-center gap-1 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors duration-300",
+                      "relative flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2.5 text-sm font-semibold transition-colors duration-300 xl:px-4",
                       isActive(pathname, item.href) ? "text-primary" : "text-foreground/75 hover:text-foreground",
                     )}
                   >
@@ -197,7 +197,7 @@ export function Header() {
             data-lenis-prevent
           >
             <div className="container flex items-center justify-between pt-5">
-              <Logo tone="dark" decorative imgClassName="h-14" onClick={() => setMobileOpen(false)} />
+              <Logo tone="dark" alt="Carenest Home Care homepage" imgClassName="h-14" onClick={() => setMobileOpen(false)} />
               <button onClick={() => setMobileOpen(false)} className="grid h-11 w-11 place-items-center rounded-full bg-white/10" aria-label="Close menu">
                 <X className="h-5 w-5" />
               </button>

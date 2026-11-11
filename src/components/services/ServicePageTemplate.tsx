@@ -53,7 +53,7 @@ export function ServicePageTemplate({ slug, data }: { slug: string; data: Servic
     <>
       <PageHero
         eyebrow={subtitle}
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Services", href: "/services" }, { label: title }]}
+        breadcrumbs={[{ label: "Carenest Homecare", href: "/" }, { label: "Home care services", href: "/services" }, { label: title }]}
         title={[
           <>
             {before}

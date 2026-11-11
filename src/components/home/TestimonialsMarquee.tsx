@@ -1,6 +1,5 @@
 "use client";
 
-import { Quote, Star } from "@/components/icons";
 import { GlowCard } from "@/components/fx/GlowCard";
 import { Marquee } from "@/components/fx/Marquee";
 import { SectionHeading } from "@/components/fx/SectionHeading";
@@ -10,12 +9,10 @@ function TestimonialCard({ quote, name }: { quote: string; name: string }) {
   return (
     <GlowCard className="mx-3 flex h-full w-[22rem] shrink-0 flex-col rounded-[1.75rem] border border-foreground/5 bg-card p-7 shadow-card md:w-[26rem]">
       <div className="flex items-center justify-between">
-        <div className="flex gap-0.5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-4 w-4 fill-accent text-accent" />
-          ))}
-        </div>
-        <Quote className="h-8 w-8 text-primary/15" />
+        <span role="img" aria-label="Rated 5 out of 5" className="stars-5 text-accent" />
+        <span aria-hidden className="accent-serif h-8 text-6xl leading-none text-primary/20">
+          &ldquo;
+        </span>
       </div>
       <p className="mt-5 flex-1 leading-relaxed text-foreground/80">&ldquo;{quote}&rdquo;</p>
       <div className="mt-6 flex items-center gap-3 border-t border-foreground/5 pt-5">

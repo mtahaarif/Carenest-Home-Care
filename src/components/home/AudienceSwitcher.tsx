@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import Link from "next/link";
 import { AnimatePresence, m } from "motion/react";
 import { ArrowUpRight, Check } from "@/components/icons";
@@ -85,7 +85,7 @@ export function AudienceSwitcher() {
                 className="relative aspect-[4/3] overflow-hidden rounded-[2rem]"
               >
                 <m.div initial={{ scale: 1.2 }} animate={{ scale: 1 }} transition={{ duration: 1.2, ease: EASE_OUT }} className="absolute inset-0">
-                  <Image src={a.image.src} alt="" sizes="(min-width: 1024px) 45vw, 90vw" placeholder="blur" className="h-full w-full object-cover" />
+                  <Image src={a.image.src} alt="" sizes="(min-width: 1024px) 45vw, 90vw" className="h-full w-full object-cover" />
                 </m.div>
               </m.div>
             </AnimatePresence>

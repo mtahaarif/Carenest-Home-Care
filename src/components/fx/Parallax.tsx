@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import { m, useScroll, useTransform } from "motion/react";
 import type { SiteImage } from "@/lib/images";
 import { cn } from "@/lib/utils";
@@ -26,7 +26,7 @@ export function ParallaxImage({ image, alt, className, imgClassName, amount = 12
   return (
     <div ref={ref} className={cn("relative overflow-hidden", className)}>
       <m.div style={{ y, scale: 1 + (amount * 2.2) / 100 }} className="absolute inset-0">
-        <Image src={image.src} alt={alt ?? image.alt} sizes={sizes} placeholder="blur" className={cn("h-full w-full object-cover", imgClassName)} />
+        <Image src={image.src} alt={alt ?? image.alt} sizes={sizes} className={cn("h-full w-full object-cover", imgClassName)} />
       </m.div>
     </div>
   );

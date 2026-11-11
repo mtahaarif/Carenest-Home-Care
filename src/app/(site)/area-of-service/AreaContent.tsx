@@ -21,7 +21,7 @@ export function AreaContent() {
     <>
       <PageHero
         eyebrow="Service coverage"
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Areas of Service" }]}
+        breadcrumbs={[{ label: "Carenest Homecare", href: "/" }, { label: "Areas of Service" }]}
         title={[
           "Where",
           <>

@@ -12,7 +12,7 @@ export const metadata = pageMetadata({
 export default function ContactPage() {
   return (
     <>
-      <JsonLd data={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]), faqJsonLd(CONTACT_FAQS)]} />
+      <JsonLd data={[breadcrumbJsonLd([{ name: "Carenest Homecare", path: "/" }, { name: "Contact", path: "/contact" }]), faqJsonLd(CONTACT_FAQS)]} />
       <ContactContent />
     </>
   );

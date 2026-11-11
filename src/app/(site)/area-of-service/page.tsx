@@ -4,7 +4,7 @@ import { AREA_FAQS } from "@/content/site";
 import { breadcrumbJsonLd, faqJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Home Care in Cook, Lake & DuPage Counties",
+  title: "Home Care in Cook, Lake & DuPage, IL",
   description: "Compassionate, professional in-home care throughout Cook, Lake, and DuPage counties in Illinois — including Chicago and its suburbs.",
   path: "/area-of-service",
 });
@@ -12,7 +12,7 @@ export const metadata = pageMetadata({
 export default function AreaOfServicePage() {
   return (
     <>
-      <JsonLd data={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Areas of Service", path: "/area-of-service" }]), faqJsonLd(AREA_FAQS)]} />
+      <JsonLd data={[breadcrumbJsonLd([{ name: "Carenest Homecare", path: "/" }, { name: "Areas of Service", path: "/area-of-service" }]), faqJsonLd(AREA_FAQS)]} />
       <AreaContent />
     </>
   );

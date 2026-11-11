@@ -97,7 +97,7 @@ export function ContactContent() {
     <>
       <PageHero
         eyebrow="Contact us"
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
+        breadcrumbs={[{ label: "Carenest Homecare", href: "/" }, { label: "Contact" }]}
         title={[
           "Let's talk about",
           <>

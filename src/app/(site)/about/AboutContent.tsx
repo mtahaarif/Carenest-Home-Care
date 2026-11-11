@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Img as Image } from "@/components/ui/img";
 import Link from "next/link";
 import { ArrowUpRight, BadgeCheck } from "@/components/icons";
 import { GlowCard } from "@/components/fx/GlowCard";
@@ -38,7 +38,7 @@ export function AboutContent() {
     <>
       <PageHero
         eyebrow="About Carenest"
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
+        breadcrumbs={[{ label: "Carenest Homecare", href: "/" }, { label: "About" }]}
         title={[
           "A fresh approach",
           <>
@@ -130,7 +130,7 @@ export function AboutContent() {
           <RevealGroup className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2" stagger={0.1}>
             <RevealItem className="md:col-span-2 lg:row-span-2">
               <div className="group relative h-full min-h-[26rem] overflow-hidden rounded-[2rem]">
-                <Image src={IMAGES.familyTogether.src} alt={IMAGES.familyTogether.alt} sizes="(min-width: 1024px) 50vw, 92vw" placeholder="blur" className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                <Image src={IMAGES.familyTogether.src} alt={IMAGES.familyTogether.alt} sizes="(min-width: 1024px) 50vw, 92vw" className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-8 text-white md:p-10">
                   {(() => {

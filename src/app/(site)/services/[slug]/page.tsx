@@ -31,7 +31,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         data={[
           serviceJsonLd({ name: data.title, description: SERVICE_SEO[slug as ServiceSlug].description, path }),
           breadcrumbJsonLd([
-            { name: "Home", path: "/" },
+            { name: "Carenest Homecare", path: "/" },
             { name: "Services", path: "/services" },
             { name: data.title, path },
           ]),
