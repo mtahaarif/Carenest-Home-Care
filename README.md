@@ -627,15 +627,22 @@ The button is built with `cva` and supports `asChild` (Radix `Slot`) for links.
 
 ## 12. Motion system
 
-All motion components use the lightweight `m.*` elements from `motion/react` inside the global `LazyMotion`. Motion
-and reduced-motion settings come from `MotionConfig reducedMotion="user"`.
+Interactive motion components use the lightweight `m.*` elements from `motion/react` inside the global `LazyMotion`.
+Motion and reduced-motion settings come from `MotionConfig reducedMotion="user"`.
+
+Scroll reveals (`Reveal`, `RevealGroup`, `RevealItem`) don't use `motion`: they are plain server components that
+render `data-reveal*` attributes, animated by CSS ("Scroll reveal" in `globals.css`). A ~2 KB inline runtime
+(`fx/reveal-runtime.ts`, injected into `<head>` by the root layout) runs before the body is parsed, arms the hidden
+state (`html[data-reveal-js]`) and marks elements `data-revealed` as they scroll into view, so reveals need neither
+React hydration nor inline styles in the HTML. A `MutationObserver` picks up content added by client-side navigation.
+Without JavaScript, or with reduced motion, nothing is hidden. Because the runtime touches these elements before
+hydration, they (and `<html>`) carry `suppressHydrationWarning`.
 
 | Component (`src/components/fx`) | What it does | Notable props |
 |---|---|---|
 | `SmoothScroll` | Lenis smooth scroll (`lerp 0.11`, anchors enabled), LazyMotion, MotionConfig, scroll reset on route change. Lenis is off with reduced motion. | — |
-| `Reveal` | Fades, slides and unblurs content when it enters the viewport | `direction`, `distance`, `delay`, `duration`, `blur`, `once`, `as` |
-| `RevealGroup` / `RevealItem` | Staggered reveal of child items | `stagger`, `delay` |
-| `MaskLines` | Line-by-line masked slide-up for headings | `lines`, `delay`, `immediate` |
+| `Reveal` | CSS fade, slide and unblur when the element enters the viewport (once) | `direction`, `distance` (0/28/40/60), `delay`, `duration`, `blur`, `as` |
+| `RevealGroup` / `RevealItem` | Staggered CSS reveal of child items, in document order | `stagger`, `delay` |
 | `SectionHeading` | Eyebrow, title and description with staggered reveals | `align`, `tone`, `as` (`h1`/`h2`) |
 | `TextReveal` | Scroll-linked word-by-word opacity reveal; listed words get the serif accent style | `text`, `highlight[]` |
 | `StackingCards` | Sticky vertical stack; earlier cards scale down and dim as later ones arrive | `items`, `top`, `gap` |
@@ -695,7 +702,9 @@ and reduced-motion settings come from `MotionConfig reducedMotion="user"`.
   - Optional controls on large screens: progress tabs, an `01 / 04` counter and prev/next buttons.
   - Autoplay starts only after the first user interaction and pauses when the tab is hidden or with reduced motion.
   - The first slide is preloaded with `fetchPriority="high"` because it is the LCP image. The next slide is
-    downloaded and decoded in advance.
+    downloaded and decoded in advance, so later slides are passed without a blur placeholder (smaller RSC payload).
+  - Below 1024 px the photo sits under a 70–90 % opaque wash, so `sizes` requests half the drawn resolution there:
+    visually identical, and roughly a 3× lighter LCP image on phones.
   - Legibility washes: vertical on mobile, from the left on desktop, and a bottom fade into the page.
 - **`HeroLines`**: a CSS-only masked line reveal. It exports `HERO_DELAYS`, nine literal Tailwind delay classes
   from 100 to 900 ms.
@@ -726,8 +735,9 @@ and reduced-motion settings come from `MotionConfig reducedMotion="user"`.
 - Fetches `/data/illinois-counties.json` once. The promise is cached at module level and the cache resets on failure.
 - Uses a d3 `geoMercator` projection fitted to a padded frame around the three service counties, identified by FIPS
   code: Cook `17031`, Lake `17097`, DuPage `17043`.
-- Renders neighbouring states and the other Illinois counties as context. Service counties use a teal gradient and
-  turn gold with a drop shadow and a slight scale when active.
+- Renders neighbouring states and the other Illinois counties as context, each layer as a single merged `<path>` (one
+  element per county would add ~100 sibling nodes). Coordinates are rounded to 1 decimal. Service counties use a teal
+  gradient and turn gold with a drop shadow and a slight scale when active.
 - Adds a "Lake Michigan" label and a pulsing Chicago marker (SVG `<animate>`).
 - Service counties are keyboard-focusable (`tabIndex=0`, focus/blur mirror hover), and the SVG has `role="img"` with a
   descriptive `aria-label`.
@@ -741,8 +751,8 @@ shadcn/ui-style wrappers styled with the brand tokens: `accordion`, `badge`, `bu
   - a WebP `srcset` of all pre-generated widths, plus `sizes` (defaults to the `width` prop in px);
   - intrinsic `width`/`height` attributes (no layout shift), `loading="lazy"` and `decoding="async"` by default;
   - a blurred placeholder painted behind photos until they load (`placeholder="empty"` turns it off);
-  - a modest plain `src` fallback (the first variant at least 828 px wide), so crawlers and link-preview scrapers
-    don't download the largest file;
+  - a modest plain `src` fallback (the first variant at least 2× a fixed pixel `sizes`, such as the logo's `140px`,
+    otherwise at least 828 px wide), so crawlers, audit tools and link-preview scrapers don't download a large file;
   - a `preload` prop that emits a high-priority `<link rel="preload">` through `react-dom`'s `preload()`.
   - `srcSetOf(asset)` is exported for preloading images in code (used by the slideshow).
 
@@ -827,7 +837,7 @@ FAQ answers in the JSON-LD come from the same arrays that render on the page, so
   - The first banner slide and the header logo are preloaded with high fetch priority. The next slideshow photo is
     downloaded and decoded before it appears.
 - **First paint**
-  - Hero banners animate with CSS only, before hydration.
+  - Hero banners animate with CSS only, before hydration. Scroll reveals are CSS plus a tiny inline script (§12).
   - The page-transition curtain only runs on client-side navigations.
   - The accent serif font isn't preloaded, so it never competes with the LCP image.
   - Ambient loops (slideshow autoplay, marquees, auroras, floating chips, ping dots) start only after the visitor's
@@ -865,7 +875,7 @@ src/lib/images.ts (IMAGES + alt text) ──▶ <Img> renders <img srcset sizes 
   formats browsers and platforms require.
 - **`sizes` must describe how large the image is actually drawn.** Two components account for this automatically.
   `BannerMedia` computes `max(106vw, banner-height × aspect ratio)`, because a tall phone banner crops a landscape
-  photo and draws it much wider than the screen. `ParallaxImage` multiplies its `sizes` by its overscale.
+  photo and draws it much wider than the screen (halved below 1024 px, where the photo is under the mobile wash). `ParallaxImage` multiplies its `sizes` by its overscale.
 - **Source resolution is the ceiling.** The masters are 1920 px at most, and two of them are portrait, 1280 px wide
   (`cta-banner`, `care-bedside-support`). Full-width banners on very large or high-density screens upscale these.
   For perfectly crisp heroes there, replace the masters with higher-resolution originals (2560–3840 px wide) and add
@@ -884,7 +894,7 @@ Security headers are applied to every route in `next.config.ts`:
 | `X-Frame-Options` | `SAMEORIGIN` |
 | `X-Content-Type-Options` | `nosniff` |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` |
-| `Permissions-Policy` | Camera, microphone, geolocation and browsing-topics disabled |
+| `Permissions-Policy` | Camera, microphone and geolocation disabled (only features every browser recognises; an unknown one logs a console error on each page) |
 | `X-DNS-Prefetch-Control` | `on` |
 
 `poweredByHeader` is disabled. Other safeguards in the code:

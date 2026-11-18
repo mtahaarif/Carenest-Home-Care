@@ -31,12 +31,20 @@ const BANNER_VH = 80;
 /** Peak Ken Burns zoom (see the slide animation below). */
 const ZOOM = 1.06;
 
+/** Below this width the photo sits under the 70–90% opaque mobile wash (see the `lg:hidden` wash below). */
+const WASHED_MAX_WIDTH = 1023;
+/** Share of the drawn resolution requested under the wash: the softening is invisible beneath it. */
+const WASHED_SCALE = 0.5;
+
 /**
  * `sizes` for a cover-cropped banner photo: it is drawn at whichever is larger, the full viewport width
  * or the banner height × the photo's aspect ratio (tall phone banners crop landscape photos wide).
+ * On phones and tablets the photo is mostly covered by the legibility wash, so half that resolution
+ * looks identical and makes the LCP image roughly 3× lighter.
  */
 function bannerSizes(aspect: number) {
-  return `max(${Math.ceil(100 * ZOOM)}vw, ${Math.ceil(BANNER_VH * aspect * ZOOM)}vh)`;
+  const size = (scale: number) => `max(${Math.ceil(100 * ZOOM * scale)}vw, ${Math.ceil(BANNER_VH * aspect * ZOOM * scale)}vh)`;
+  return `(max-width: ${WASHED_MAX_WIDTH}px) ${size(WASHED_SCALE)}, ${size(1)}`;
 }
 
 export function BannerMedia({ images, interval = 6500, controls = false, className }: BannerMediaProps) {

@@ -20,7 +20,7 @@ const NAV = [
   { label: "About Us", href: "/about" },
   { label: "Our Services", href: "/services", mega: true },
   { label: "Areas We Serve", href: "/area-of-service" },
-  { label: "Careers", href: "/careers" },
+  { label: "Caregiver Jobs", href: "/careers" },
   { label: "Contact Us", href: "/contact" },
 ];
 

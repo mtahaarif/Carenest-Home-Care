@@ -20,6 +20,7 @@ interface ImgProps extends Omit<ComponentProps<"img">, "src" | "srcSet" | "width
   /**
    * Width of the plain `src` fallback. Browsers pick from `srcset`; only clients that ignore it
    * (crawlers, link-preview scrapers, audit tools) download `src`, so it shouldn't be the largest variant.
+   * Defaults to 2× a fixed pixel `sizes` (e.g. the logo), otherwise 828px.
    */
   fallbackWidth?: number;
 }
@@ -37,7 +38,7 @@ export function Img({
   height,
   preload = false,
   placeholder = "blur",
-  fallbackWidth = 828,
+  fallbackWidth,
   loading,
   fetchPriority,
   decoding = "async",
@@ -45,8 +46,10 @@ export function Img({
   ...rest
 }: ImgProps) {
   const srcSet = srcSetOf(asset);
-  const src = (asset.srcSet.find(([w]) => w >= fallbackWidth) ?? asset.srcSet[asset.srcSet.length - 1])[1];
   const resolvedSizes = sizes ?? `${width ?? asset.width}px`;
+  const fixedPx = /^(\d+(?:\.\d+)?)px$/.exec(resolvedSizes.trim());
+  const minFallback = fallbackWidth ?? (fixedPx ? Math.ceil(Number(fixedPx[1]) * 2) : 828);
+  const src = (asset.srcSet.find(([w]) => w >= minFallback) ?? asset.srcSet[asset.srcSet.length - 1])[1];
 
   if (preload) {
     preloadResource(src, { as: "image", imageSrcSet: srcSet, imageSizes: resolvedSizes, fetchPriority: "high" });

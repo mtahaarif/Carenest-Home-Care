@@ -6,16 +6,20 @@ import { BannerMedia, type BannerImage } from "@/components/sections/BannerMedia
 import { HERO_DELAYS, HeroLines } from "@/components/sections/HeroLines";
 import { Button } from "@/components/ui/button";
 import { SERVICES } from "@/content/site";
+import type { SiteImage } from "@/lib/images";
 import { IMAGES, SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const TRUST = ["Licensed, bonded & insured", "Free consultation", "Locally owned and operated"];
 
+/** Later slides are fully decoded before they fade in, so their blur placeholder would never show. */
+const noBlur = ({ src, alt }: SiteImage): SiteImage => ({ alt, src: { ...src, blur: undefined } });
+
 const SLIDES: BannerImage[] = [
   { image: IMAGES.teaConversation, position: "object-[65%_center]" },
-  { image: IMAGES.familyJoy, position: "object-[70%_center]" },
-  { image: IMAGES.ctaBanner, position: "object-[center_22%]" },
-  { image: IMAGES.elderlyTablet, position: "object-[75%_center]" },
+  { image: noBlur(IMAGES.familyJoy), position: "object-[70%_center]" },
+  { image: noBlur(IMAGES.ctaBanner), position: "object-[center_22%]" },
+  { image: noBlur(IMAGES.elderlyTablet), position: "object-[75%_center]" },
 ];
 
 function ServicePills() {

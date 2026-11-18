@@ -189,6 +189,51 @@ html.lenis body {
 }
 
 /* -------------------------------------------------------------------------- */
+/*  Scroll reveal (<Reveal>, <RevealGroup>/<RevealItem>; runtime in            */
+/*  components/fx/reveal-runtime.ts). Only armed once the runtime has set      */
+/*  html[data-reveal-js], so content is never hidden without JavaScript.       */
+/* -------------------------------------------------------------------------- */
+
+[data-reveal] {
+  --reveal-distance: 28px;
+  --reveal-x: 0px;
+  --reveal-y: 0px;
+  --reveal-from: translate3d(var(--reveal-x), var(--reveal-y), 0);
+  --reveal-blur: blur(8px);
+}
+[data-reveal="up"] { --reveal-y: var(--reveal-distance); }
+[data-reveal="down"] { --reveal-y: calc(var(--reveal-distance) * -1); }
+[data-reveal="left"] { --reveal-x: var(--reveal-distance); }
+[data-reveal="right"] { --reveal-x: calc(var(--reveal-distance) * -1); }
+[data-reveal-distance="0"] { --reveal-distance: 0px; }
+[data-reveal-distance="40"] { --reveal-distance: 40px; }
+[data-reveal-distance="60"] { --reveal-distance: 60px; }
+[data-reveal-blur="off"] { --reveal-blur: blur(0px); }
+[data-reveal-item] {
+  --reveal-from: translate3d(0, 32px, 0) scale(0.97);
+  --reveal-blur: blur(6px);
+  --reveal-duration: 0.7s;
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: var(--reveal-from);
+    filter: var(--reveal-blur);
+  }
+}
+
+[data-reveal-js] :is([data-reveal], [data-reveal-item]):not([data-revealed]) {
+  opacity: 0;
+  transform: var(--reveal-from);
+  filter: var(--reveal-blur);
+}
+/* `backwards` holds the start frame during the stagger delay; afterwards the element's own styles apply again. */
+[data-reveal-js] :is([data-reveal], [data-reveal-item])[data-revealed] {
+  animation: reveal-in var(--reveal-duration, 0.8s) cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Utilities                                                                  */
 /* -------------------------------------------------------------------------- */
 

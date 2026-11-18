@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { REVEAL_SCRIPT } from "@/components/fx/reveal-runtime";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { localBusinessJsonLd } from "@/lib/seo";
 import { SITE, SITE_URL } from "@/lib/site";
@@ -47,7 +48,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${instrument.variable}`}>
+    // The inline reveal runtime adds `data-reveal-js` to <html> before hydration.
+    <html lang="en" className={`${jakarta.variable} ${instrument.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Scroll-reveal runtime: must run before the body is parsed so revealed content never flashes. */}
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_SCRIPT }} />
+      </head>
       {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
       <body>
         <JsonLd data={localBusinessJsonLd()} />

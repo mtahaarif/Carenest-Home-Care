@@ -64,15 +64,26 @@ export function IllinoisMap({ active, onHover, className }: IllinoisMapProps) {
       ],
       frame,
     );
-    const path = geoPath(projection);
-    return { projection, path };
+    // One decimal is sub-pixel at this scale and keeps the path strings short.
+    const path = geoPath(projection).digits(1);
+    // Context shapes aren't interactive, so each layer is drawn as a single <path> (≈100 counties
+    // as separate elements would make a needlessly wide DOM).
+    const states = data.states.features
+      .filter((f) => String(f.id) !== "17")
+      .map((f) => path(f) ?? "")
+      .join("");
+    const otherCounties = data.counties.features
+      .filter((f) => !SERVICE_IDS[String(f.id)])
+      .map((f) => path(f) ?? "")
+      .join("");
+    return { projection, path, states, otherCounties, service };
   }, [data]);
 
   if (!data || !geo) {
     return <div className={cn("animate-pulse rounded-3xl bg-white/40", className)} />;
   }
 
-  const { path, projection } = geo;
+  const { path, projection, states, otherCounties, service } = geo;
   const [cx, cy] = projection(CHICAGO) ?? [0, 0];
   const [lx, ly] = projection(LAKE_LABEL) ?? [0, 0];
 
@@ -89,23 +100,13 @@ export function IllinoisMap({ active, onHover, className }: IllinoisMapProps) {
       </defs>
 
       {/* Neighbouring states for context */}
-      {data.states.features
-        .filter((f) => String(f.id) !== "17")
-        .map((f) => (
-          <path key={`s-${f.id}`} d={path(f) ?? ""} fill="hsl(40 25% 92%)" stroke="white" strokeWidth={1.5} />
-        ))}
+      <path d={states} fill="hsl(40 25% 92%)" stroke="white" strokeWidth={1.5} />
 
-      {/* Illinois counties */}
-      {data.counties.features
-        .filter((f) => !SERVICE_IDS[String(f.id)])
-        .map((f) => (
-          <path key={f.id} d={path(f) ?? ""} fill="hsl(168 28% 86%)" stroke="white" strokeWidth={1} className="transition-[fill] duration-300 hover:fill-[hsl(168_28%_80%)]" />
-        ))}
+      {/* Other Illinois counties */}
+      <path d={otherCounties} fill="hsl(168 28% 86%)" stroke="white" strokeWidth={1} />
 
       {/* Service counties */}
-      {data.counties.features
-        .filter((f) => SERVICE_IDS[String(f.id)])
-        .map((f) => {
+      {service.map((f) => {
           const name = SERVICE_IDS[String(f.id)];
           const isActive = active === name;
           const [tx, ty] = path.centroid(f);
