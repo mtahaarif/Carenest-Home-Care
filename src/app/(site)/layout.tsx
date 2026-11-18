@@ -8,7 +8,12 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
     <>
       <ScrollProgress />
       <Header />
-      <main id="main">{children}</main>
+      {/* Clip horizontally here (not only on <body>, whose overflow is handed to the viewport): elements
+          waiting to slide in from the side would otherwise widen the page and make phones zoom out.
+          `clip` (unlike `hidden`) keeps position: sticky working. */}
+      <main id="main" className="overflow-x-clip">
+        {children}
+      </main>
       <Footer />
     </>
   );

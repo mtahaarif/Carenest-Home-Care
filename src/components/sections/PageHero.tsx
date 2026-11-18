@@ -28,18 +28,25 @@ interface PageHeroProps {
 /**
  * Full-bleed photo banner used at the top of every inner page. Entrance animations are pure CSS
  * so the banner paints on first load without waiting for JavaScript (better LCP / Speed Index).
+ *
+ * The banner is always 60% of the window height (`h-banner`). The top padding clears the fixed
+ * header; the headline scales with the window (`text-hero`), and secondary items condense or hide
+ * on shorter screens so the content always fits.
  */
 export function PageHero({ eyebrow, title, description, breadcrumbs, actions, image, imagePosition, images, badge, children, className }: PageHeroProps) {
   const media: BannerImage[] = images ?? (image ? [{ image, position: imagePosition ?? "object-[70%_center]" }] : []);
 
   return (
-    <section className={cn("relative isolate flex min-h-[600px] items-center overflow-hidden pb-20 pt-40 md:min-h-[660px] md:pt-48 lg:min-h-[72vh]", className)}>
+    <section data-banner className={cn("relative isolate flex h-banner flex-col justify-center overflow-hidden pb-6 pt-[6.25rem] md:pb-10 md:pt-[8rem]", className)}>
       {media.length > 0 ? <BannerMedia images={media} controls={media.length > 1} /> : <div className="absolute inset-0 -z-10 bg-secondary/60" />}
 
       <div className="container relative">
-        <div className="max-w-2xl">
+        <div data-banner-content className="max-w-2xl">
           {breadcrumbs && (
-            <nav aria-label="Breadcrumb" className={cn("mb-7 flex w-fit animate-rise rounded-full glass px-4 py-2 text-xs font-semibold text-muted-foreground", HERO_DELAYS[0])}>
+            <nav
+              aria-label="Breadcrumb"
+              className={cn("mb-4 flex w-fit animate-rise rounded-full glass px-4 py-2 text-xs font-semibold text-muted-foreground max-sm:hidden very-short-screen:hidden", HERO_DELAYS[0])}
+            >
               <ol className="flex items-center gap-1.5">
                 {breadcrumbs.map((b, i) => (
                   <li key={b.label} className="flex items-center gap-1.5">
@@ -64,19 +71,29 @@ export function PageHero({ eyebrow, title, description, breadcrumbs, actions, im
             {eyebrow}
           </p>
 
-          <h1 className="mt-5 text-5xl font-bold leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="mt-3 text-hero font-bold text-foreground md:mt-4">
             <HeroLines lines={title} startIndex={2} />
           </h1>
 
-          {description && <p className={cn("mt-6 max-w-xl animate-rise text-lg leading-relaxed text-foreground/75 md:text-xl", HERO_DELAYS[4])}>{description}</p>}
+          {description && (
+            <p
+              className={cn(
+                "mt-3 line-clamp-3 max-w-xl animate-rise text-base leading-relaxed text-foreground/75 md:mt-4 md:text-lg very-short-screen:line-clamp-2",
+                HERO_DELAYS[4],
+              )}
+            >
+              {description}
+            </p>
+          )}
 
-          {actions && <div className={cn("mt-9 flex animate-rise flex-wrap items-center gap-4", HERO_DELAYS[5])}>{actions}</div>}
-          {children && <div className={cn("animate-rise", HERO_DELAYS[6])}>{children}</div>}
+          {actions && <div className={cn("mt-5 flex animate-rise flex-wrap items-center gap-3 md:mt-7 md:gap-4", HERO_DELAYS[5])}>{actions}</div>}
+          {/* Optional extras (e.g. county chips) only where there is vertical room for them. */}
+          {children && <div className={cn("animate-rise short-screen:hidden", HERO_DELAYS[6])}>{children}</div>}
         </div>
       </div>
 
       {badge && (
-        <div className={cn("absolute bottom-10 right-[max(1.25rem,calc((100vw-80rem)/2+2rem))] hidden animate-pop md:block", HERO_DELAYS[8], media.length > 1 && "bottom-24")}>
+        <div className={cn("absolute bottom-8 right-[max(1.25rem,calc((100vw-80rem)/2+2rem))] hidden animate-pop lg:block", HERO_DELAYS[8], media.length > 1 && "bottom-20")}>
           {badge}
         </div>
       )}

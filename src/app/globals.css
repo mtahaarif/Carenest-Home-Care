@@ -3,6 +3,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Viewport-height variants, used to condense hero banners on shorter screens. */
+@custom-variant short-screen (@media (max-height: 799px));
+@custom-variant very-short-screen (@media (max-height: 700px));
+@custom-variant tall-screen (@media (min-height: 1000px));
+
 /* -------------------------------------------------------------------------- */
 /*  Design tokens — Carenest brand (teal + warm gold) on a warm-white canvas   */
 /* -------------------------------------------------------------------------- */
@@ -196,6 +201,22 @@ html.lenis body {
   @media (width >= 48rem) {
     padding-inline: 2rem;
   }
+}
+
+/*
+ * Hero banners never take more than 80% of the window height at the top of the page.
+ * `svh` is the smallest viewport height (mobile address bar visible), so 80svh is ≤ 80% in every state.
+ * Keep BANNER_VH in components/sections/BannerMedia.tsx in sync.
+ */
+@utility h-banner {
+  height: 80vh;
+  height: 80svh;
+}
+
+/* Hero headline: scales with both width (phones) and height (short laptops) so it always fits the banner. */
+@utility text-hero {
+  font-size: clamp(1.75rem, min(8.2vw, 5.6svh + 0.5rem), 4.5rem);
+  line-height: 1.04;
 }
 
 /* Italic serif accent used inside headings */

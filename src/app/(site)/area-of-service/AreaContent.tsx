@@ -38,7 +38,7 @@ export function AreaContent() {
         imagePosition="object-[center_22%]"
         actions={
           <Magnetic>
-            <Button asChild variant="hero" size="xl">
+            <Button asChild variant="hero" size="lg">
               <Link href="/contact">
                 Check your area <ArrowUpRight />
               </Link>

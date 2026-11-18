@@ -58,7 +58,7 @@ export function AboutContent() {
         }
         actions={
           <Magnetic>
-            <Button asChild variant="hero" size="xl">
+            <Button asChild variant="hero" size="lg">
               <Link href="/contact">
                 Talk to our team <ArrowUpRight />
               </Link>

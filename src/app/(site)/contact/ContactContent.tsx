@@ -108,12 +108,12 @@ export function ContactContent() {
         image={IMAGES.teaConversation}
         actions={
           <>
-            <Button asChild variant="hero" size="xl">
+            <Button asChild variant="hero" size="lg">
               <a href={SITE.phoneHref}>
                 <Phone /> Call or Text Today
               </a>
             </Button>
-            <Button asChild variant="outline" size="xl">
+            <Button asChild variant="outline" size="lg">
               <a href="#contact-form">
                 Send a message <ArrowUpRight />
               </a>

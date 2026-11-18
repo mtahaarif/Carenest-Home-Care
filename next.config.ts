@@ -33,19 +33,20 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  images: {
-    formats: ["image/avif", "image/webp"],
-    // Cap generated widths at 1920px (no 2048/3840 variants) and allow a lighter photo quality.
-    deviceSizes: [640, 750, 828, 1080, 1200, 1600, 1920],
-    qualities: [70, 75],
-    minimumCacheTTL: 60 * 60 * 24 * 30,
-  },
+  // Images are pre-optimised to responsive WebP at build time (scripts/optimize-images.mjs) and
+  // served as static files by <Img>, so the on-demand next/image optimizer is not used.
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
       {
         source: "/:all*(jpg|jpeg|png|webp|avif|svg|ico|json)",
         headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" }],
+      },
+      // Generated variants have a content hash in their name, so they can be cached forever.
+      // (Declared last so it overrides the rule above.)
+      {
+        source: "/assets/r/:file*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
     ];
   },

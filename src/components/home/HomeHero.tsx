@@ -37,11 +37,12 @@ function ServicePills() {
 export function HomeHero() {
   return (
     <section className="relative">
-      <div className="relative isolate flex min-h-[720px] items-center overflow-hidden pb-28 pt-40 lg:min-h-[100svh] lg:pt-40">
+      {/* 60% of the window height; content condenses on shorter screens (see PageHero). */}
+      <div data-banner className="relative isolate flex h-banner flex-col justify-center overflow-hidden pb-6 pt-[6.25rem] md:pb-10 md:pt-[8rem]">
         <BannerMedia images={SLIDES} controls interval={6000} />
 
         <div className="container relative">
-          <div className="max-w-2xl">
+          <div data-banner-content className="max-w-2xl">
             <p className={cn("inline-flex animate-rise items-center gap-2 rounded-full glass py-1.5 pl-1.5 pr-4 text-xs font-semibold text-foreground/80", HERO_DELAYS[1])}>
               <span className="flex items-center gap-1.5 whitespace-nowrap rounded-full bg-primary px-2.5 py-1 text-primary-foreground">
                 <span className="relative flex h-1.5 w-1.5">
@@ -55,7 +56,7 @@ export function HomeHero() {
               </span>
             </p>
 
-            <h1 className="mt-7 text-[2.9rem] font-extrabold leading-[0.98] tracking-tight text-foreground sm:text-6xl xl:text-[5rem]">
+            <h1 className="mt-4 text-hero font-extrabold leading-[1] tracking-tight text-foreground md:mt-5">
               <HeroLines
                 startIndex={2}
                 lines={[
@@ -68,28 +69,33 @@ export function HomeHero() {
               />
             </h1>
 
-            <p className={cn("mt-7 max-w-xl animate-rise text-lg leading-relaxed text-foreground/75", HERO_DELAYS[5])}>
+            <p
+              className={cn(
+                "mt-3 line-clamp-3 max-w-xl animate-rise text-base leading-relaxed text-foreground/75 md:mt-4 md:text-lg very-short-screen:line-clamp-2",
+                HERO_DELAYS[5],
+              )}
+            >
               Every family faces care decisions. You want care that feels right, delivered by someone you trust. At Carenest, we work with you to find{" "}
               <strong className="font-semibold text-foreground">the right caregiver</strong>, whether that&apos;s someone you already know or a qualified professional
               from our team.
             </p>
 
-            <div className={cn("mt-9 flex animate-rise flex-wrap items-center gap-4", HERO_DELAYS[6])}>
+            <div className={cn("mt-5 flex animate-rise flex-wrap items-center gap-3 md:mt-7 md:gap-4", HERO_DELAYS[6])}>
               <Magnetic>
-                <Button asChild variant="hero" size="xl">
+                <Button asChild variant="hero" size="lg">
                   <a href={SITE.phoneHref}>
                     <Phone /> Call or Text Today
                   </a>
                 </Button>
               </Magnetic>
-              <Button asChild variant="outline" size="xl">
+              <Button asChild variant="outline" size="lg">
                 <Link href="/services">
                   Explore home care services <ArrowUpRight />
                 </Link>
               </Button>
             </div>
 
-            <ul className={cn("mt-10 flex animate-rise flex-wrap gap-x-6 gap-y-3", HERO_DELAYS[7])}>
+            <ul className={cn("mt-7 flex animate-rise flex-wrap gap-x-6 gap-y-3 max-md:hidden short-screen:hidden", HERO_DELAYS[7])}>
               {TRUST.map((t) => (
                 <li key={t} className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
                   <CircleCheckBig className="h-4 w-4 text-primary" />

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { StaticImageData } from "next/image";
+import type { ImageAsset } from "./images";
 import { SITE, SITE_URL } from "./site";
 
 interface PageMetaInput {
@@ -9,8 +9,8 @@ interface PageMetaInput {
   description: string;
   /** Route path, e.g. "/about". Used for the canonical URL and og:url. */
   path: string;
-  /** Social preview image (defaults to the site OG image). */
-  image?: StaticImageData;
+  /** Social preview image (defaults to the site OG image). Uses the asset's 1200×630 JPEG. */
+  image?: ImageAsset;
   /** Use the title verbatim instead of the layout template. */
   absoluteTitle?: boolean;
 }
@@ -18,8 +18,8 @@ interface PageMetaInput {
 /** Complete per-page metadata: canonical, Open Graph (incl. og:url) and Twitter card. */
 export function pageMetadata({ title, description, path, image, absoluteTitle = false }: PageMetaInput): Metadata {
   const fullTitle = absoluteTitle ? title : `${title} | ${SITE.name}`;
-  const images = image
-    ? [{ url: image.src, width: image.width, height: image.height, alt: fullTitle }]
+  const images = image?.og
+    ? [{ url: image.og, width: 1200, height: 630, alt: fullTitle }]
     : [{ url: "/og-image.png", width: 1200, height: 630, alt: "Carenest Home Care — Compassionate In-Home Care Services" }];
 
   return {
@@ -56,7 +56,7 @@ export function localBusinessJsonLd() {
     name: SITE.name,
     description: "Compassionate, non-medical in-home care for seniors and families across Cook, Lake, and DuPage counties in Illinois.",
     url: SITE_URL,
-    logo: `${SITE_URL}/assets/logo-full.png`,
+    logo: `${SITE_URL}/assets/logo-full.webp`,
     image: `${SITE_URL}/og-image.png`,
     telephone: SITE.phoneE164,
     email: SITE.email,

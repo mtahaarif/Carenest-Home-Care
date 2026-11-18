@@ -73,13 +73,13 @@ export function ServicesContent() {
         actions={
           <>
             <Magnetic>
-              <Button asChild variant="hero" size="xl">
+              <Button asChild variant="hero" size="lg">
                 <Link href="/contact">
                   Free Consultation <ArrowUpRight />
                 </Link>
               </Button>
             </Magnetic>
-            <Button asChild variant="outline" size="xl">
+            <Button asChild variant="outline" size="lg">
               <a href="#services">View services</a>
             </Button>
           </>

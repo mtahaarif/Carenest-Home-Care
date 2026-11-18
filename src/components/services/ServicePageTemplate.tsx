@@ -76,13 +76,13 @@ export function ServicePageTemplate({ slug, data }: { slug: string; data: Servic
         actions={
           <>
             <Magnetic>
-              <Button asChild variant="hero" size="xl">
+              <Button asChild variant="hero" size="lg">
                 <Link href="/contact">
                   Free Consultation <ArrowUpRight />
                 </Link>
               </Button>
             </Magnetic>
-            <Button asChild variant="outline" size="xl">
+            <Button asChild variant="outline" size="lg">
               <a href={SITE.phoneHref}>
                 <Phone /> {SITE.phone}
               </a>

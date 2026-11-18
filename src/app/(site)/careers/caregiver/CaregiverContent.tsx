@@ -71,13 +71,13 @@ export function CaregiverContent() {
         actions={
           <>
             <Magnetic>
-              <Button asChild variant="hero" size="xl">
+              <Button asChild variant="hero" size="lg">
                 <a href={SITE.applyUrl} target="_blank" rel="noopener noreferrer">
                   Apply Now <ArrowUpRight />
                 </a>
               </Button>
             </Magnetic>
-            <Button asChild variant="outline" size="xl">
+            <Button asChild variant="outline" size="lg">
               <Link href="/careers">
                 <ArrowLeft /> All jobs
               </Link>

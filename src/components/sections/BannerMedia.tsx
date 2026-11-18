@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Img as Image } from "@/components/ui/img";
+import { Img as Image, srcSetOf } from "@/components/ui/img";
 import { AnimatePresence, m, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { ChevronLeft, ChevronRight } from "@/components/icons";
 import { useUserEngaged } from "@/hooks/use-user-engaged";
@@ -26,6 +26,19 @@ interface BannerMediaProps {
  * Full-bleed banner background: slow Ken Burns zoom, scroll parallax, cross-fading slideshow
  * (when given several images) and a left-to-right wash so copy stays legible.
  */
+/** Banner height as a share of the viewport (keep in sync with the `h-banner` utility in globals.css). */
+const BANNER_VH = 80;
+/** Peak Ken Burns zoom (see the slide animation below). */
+const ZOOM = 1.06;
+
+/**
+ * `sizes` for a cover-cropped banner photo: it is drawn at whichever is larger, the full viewport width
+ * or the banner height × the photo's aspect ratio (tall phone banners crop landscape photos wide).
+ */
+function bannerSizes(aspect: number) {
+  return `max(${Math.ceil(100 * ZOOM)}vw, ${Math.ceil(BANNER_VH * aspect * ZOOM)}vh)`;
+}
+
 export function BannerMedia({ images, interval = 6500, controls = false, className }: BannerMediaProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
@@ -35,6 +48,7 @@ export function BannerMedia({ images, interval = 6500, controls = false, classNa
   // Autoplay starts after the first interaction so the initial render settles fast.
   const paused = hidden || !engaged;
   const multi = images.length > 1;
+  const sizesFor = (b: BannerImage) => bannerSizes(b.image.src.width / b.image.src.height);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
@@ -46,6 +60,16 @@ export function BannerMedia({ images, interval = 6500, controls = false, classNa
     const t = setTimeout(() => go(1), interval);
     return () => clearTimeout(t);
   }, [index, multi, paused, reduceMotion, interval, go]);
+
+  // Download and decode the next slide ahead of time so it cross-fades in fully loaded.
+  useEffect(() => {
+    if (!multi || !engaged) return;
+    const next = images[(index + 1) % images.length];
+    const img = new window.Image();
+    img.sizes = bannerSizes(next.image.src.width / next.image.src.height);
+    img.srcset = srcSetOf(next.image.src);
+    img.decode().catch(() => {});
+  }, [index, multi, engaged, images]);
 
   useEffect(() => {
     const onVisibility = () => setHidden(document.hidden);
@@ -60,9 +84,10 @@ export function BannerMedia({ images, interval = 6500, controls = false, classNa
       <m.div style={{ y }} className="absolute inset-0">
         <AnimatePresence initial={false}>
           <m.div
-            key={current.image.src.src}
-            initial={{ opacity: 0, scale: 1.14 }}
-            animate={{ opacity: 1, scale: 1.02 }}
+            key={current.image.src.name}
+            // Gentle zoom: a stronger one stretches the photo past its native pixels and softens it.
+            initial={{ opacity: 0, scale: ZOOM }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ opacity: { duration: 1.4, ease: "easeInOut" }, scale: { duration: interval / 1000 + 2, ease: "linear" } }}
             className="absolute inset-0"
@@ -71,7 +96,7 @@ export function BannerMedia({ images, interval = 6500, controls = false, classNa
             <Image
               src={current.image.src}
               alt={current.image.alt}
-              sizes="100vw"
+              sizes={sizesFor(current)}
               preload={index === 0}
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
@@ -88,13 +113,14 @@ export function BannerMedia({ images, interval = 6500, controls = false, classNa
       <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background to-transparent" />
 
       {multi && controls && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-10 z-10">
+        // Large screens only: on narrower ones the controls would overlap the banner copy.
+        <div className="pointer-events-none absolute inset-x-0 bottom-6 z-10 hidden lg:block">
           <div className="container flex justify-end">
             <div className="pointer-events-auto flex items-center gap-3 rounded-full glass py-1.5 pl-4 pr-1.5">
               <div className="flex items-center gap-1.5" role="tablist" aria-label="Banner slides">
                 {images.map((img, i) => (
                   <button
-                    key={img.image.src.src}
+                    key={img.image.src.name}
                     role="tab"
                     aria-selected={i === index}
                     aria-label={`Show slide ${i + 1}`}
